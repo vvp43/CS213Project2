@@ -13,4 +13,18 @@ public class Savings extends Account{
     final double savingsMonthlyFee = 25;
     final double savingsInterestRate = 4.0/100;
 
+    @Override
+    public double monthlyInterest() {
+        return savingsInterestRate;
+    }
+
+    @Override
+    public double monthlyFee() {
+        return savingsMonthlyFee;
+    }
+
+    @Override
+    public int compareTo(Account o) {
+        return 0;
+    }
 }
