@@ -1,5 +1,7 @@
 package RUbank;
 
+import java.sql.SQLOutput;
+
 /**
  *
  * @author
@@ -29,8 +31,10 @@ public class CollegeChecking extends Checking {
     }
 
     public static void main(String[] args) {
-        CollegeChecking cc = new CollegeChecking(Campus.NEW_BRUNSWICK);
-        System.out.println(cc.getCampus());
+//        CollegeChecking cc = new CollegeChecking(Campus.NEW_BRUNSWICK);
+//        System.out.println(cc.getCampus());
+//        System.out.println(cc.monthlyFee());
+//        System.out.println(cc.monthlyInterest());
 
     }
 }
