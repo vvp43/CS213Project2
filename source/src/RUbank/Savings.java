@@ -13,6 +13,11 @@ public class Savings extends Account{
     final double savingsMonthlyFee = 25;
     final double savingsInterestRate = 4.0/100;
 
+    public Savings(Profile holder, double balance, boolean isLoyal) {
+        super(holder, balance);
+        this.isLoyal = isLoyal;
+    }
+
     @Override
     public double monthlyInterest() {
         return savingsInterestRate;

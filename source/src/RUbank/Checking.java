@@ -12,6 +12,10 @@ public class Checking extends Account{
 
     double m = monthlyInterest();
 
+    public Checking(Profile holder, double balance) {
+        super(holder, balance);
+    }
+
 
     @Override
     public double monthlyInterest() {

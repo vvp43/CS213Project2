@@ -12,4 +12,9 @@ public class MoneyMarket extends Savings{
     //Constants
     final double marketSavingsInterestRate = 4.5/100;
     final double marketSavingsMonthlyFee= savingsMonthlyFee;
+
+    public MoneyMarket(Profile holder, double balance, boolean isLoyal, int withdrawal) {
+        super(holder, balance, isLoyal);
+        this.withdrawal = withdrawal;
+    }
 }

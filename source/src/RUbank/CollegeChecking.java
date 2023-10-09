@@ -15,12 +15,9 @@ public class CollegeChecking extends Checking {
     final double collegeCheckingFee = 12.0;
     final double collegeCheckingInterestRate = 1.0/100;
 
-    /**
-     * Constructor with campus as parameter
-     * @param campus name fo campus
-     */
-    public CollegeChecking(Campus campus){
-        this.campus=campus;
+    public CollegeChecking(Profile holder, double balance, Campus campus) {
+        super(holder, balance);
+        this.campus = campus;
     }
 
     /**
@@ -28,6 +25,16 @@ public class CollegeChecking extends Checking {
      */
     public Campus getCampus () {
         return this.campus;
+    }
+
+    @Override
+    public boolean equals(Object collegeCheckingAccount){
+        CollegeChecking c = (CollegeChecking) collegeCheckingAccount;
+        //System.out.println("CHECKING SHIZ IN HERE");
+        return holder.getFname().equals(c.holder.getFname()) &&
+                holder.getLname().equals(c.holder.getLname()) &&
+                holder.getDob().equals(c.holder.getDob()) &&
+                campus.equals(c.getCampus());
     }
 
     public static void main(String[] args) {
