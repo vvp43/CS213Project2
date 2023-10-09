@@ -183,11 +183,11 @@ public class AccountDatabase {
         if (isEmpty()){
             return false;
         } else
-            if ((accounts[find(account)].balance >= account.balance)) {
-                accounts[find(account)].balance -= account.balance;
-                System.out.println(accounts[find(account)].balance);
-                return true;
-            }
+                if ((accounts[find(account)].balance >= account.balance)) {
+                    accounts[find(account)].balance -= account.balance;
+                    //System.out.println(accounts[find(account)].balance);
+                    return true;
+                }
         return false;
     } //false if insufficient fund
 
@@ -197,7 +197,7 @@ public class AccountDatabase {
         } else
         if ((accounts[find(account)].balance >= account.balance)) {
             accounts[find(account)].balance -= account.balance;
-            System.out.println(accounts[find(account)].balance);
+            //System.out.println(accounts[find(account)].balance);
             return true;
         }
         return false;
@@ -250,8 +250,12 @@ public class AccountDatabase {
         //System.out.println("HOW ABOUT NOW SHOULD BE YES "+test.contains(johnny));
         test.printtest();
         CollegeChecking johnny2 = new CollegeChecking(a, 12000, Campus.NEW_BRUNSWICK);
+
+        // NOTE IN ORDER TO WITHDRAW, YOU MUST CREATE AN OBJECT WITH EVERY VALUE EQUAL EXCEPT BALANCE
         test.withdraw(john);
         test.withdraw(johnny2);
+
+
         //System.out.println("DOES JOHNNY 2 SAME NAME BAL DIF CAMPUS IN LIST? SHOULD BE NO"+test.contains(johnny2));
         test.printtest();
 
