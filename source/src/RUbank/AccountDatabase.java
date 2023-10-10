@@ -378,7 +378,7 @@ public class AccountDatabase {
         System.out.println(test.withdraw(johnny2));
         System.out.println(test.withdraw(johnie2));
 
-        // for updating 
+        // for updating
         System.out.println(test.withdraw(johniey2));
         johniey2 = new MoneyMarket(a, 2000, true, 1);
         System.out.println("is johniey equal to johniey 2: "+johniey.equals(johniey2));
