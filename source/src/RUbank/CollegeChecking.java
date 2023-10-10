@@ -31,10 +31,7 @@ public class CollegeChecking extends Checking {
     public boolean equals(Object collegeCheckingAccount){
         CollegeChecking c = (CollegeChecking) collegeCheckingAccount;
         //System.out.println("CHECKING SHIZ IN HERE");
-        return holder.getFname().equals(c.holder.getFname()) &&
-                holder.getLname().equals(c.holder.getLname()) &&
-                holder.getDob().equals(c.holder.getDob()) &&
-                campus.equals(c.getCampus());
+        return super.equals(c) && campus.equals(c.getCampus());
     }
 
     public static void main(String[] args) {

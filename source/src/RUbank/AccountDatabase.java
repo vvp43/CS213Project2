@@ -81,7 +81,13 @@ public class AccountDatabase {
     } //overload if necessary
     public boolean contains(CollegeChecking account) {
         return find(account) != -1;
-    } //overload if necessary
+    }
+    public boolean contains(Savings account) {
+        return find(account) != -1;
+    }
+    public boolean contains(MoneyMarket account) {
+        return find(account) != -1;
+    }
     public boolean open(Account account) {
         if (numAcct == 0) {
             grow();
@@ -185,7 +191,6 @@ public class AccountDatabase {
         } else
                 if ((accounts[find(account)].balance >= account.balance)) {
                     accounts[find(account)].balance -= account.balance;
-                    //System.out.println(accounts[find(account)].balance);
                     return true;
                 }
         return false;
@@ -197,7 +202,6 @@ public class AccountDatabase {
         } else
         if ((accounts[find(account)].balance >= account.balance)) {
             accounts[find(account)].balance -= account.balance;
-            //System.out.println(accounts[find(account)].balance);
             return true;
         }
         return false;
@@ -249,10 +253,10 @@ public class AccountDatabase {
         //test.addy(johnny, 1);
         //System.out.println("HOW ABOUT NOW SHOULD BE YES "+test.contains(johnny));
         test.printtest();
-        CollegeChecking johnny2 = new CollegeChecking(a, 12000, Campus.NEW_BRUNSWICK);
+        CollegeChecking johnny2 = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
 
         // NOTE IN ORDER TO WITHDRAW, YOU MUST CREATE AN OBJECT WITH EVERY VALUE EQUAL EXCEPT BALANCE
-        test.withdraw(john);
+        System.out.println(test.withdraw(john2));
         test.withdraw(johnny2);
 
 

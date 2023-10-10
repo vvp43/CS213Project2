@@ -17,4 +17,12 @@ public class MoneyMarket extends Savings{
         super(holder, balance, isLoyal);
         this.withdrawal = withdrawal;
     }
+
+    @Override
+    public boolean equals(Object mmAccount){
+        MoneyMarket m = (MoneyMarket) mmAccount;
+        //System.out.println("CHECKING SHIZ IN HERE");
+        return super.equals(m) && (withdrawal == m.withdrawal);
+    }
+
 }

@@ -19,6 +19,12 @@ public class Savings extends Account{
     }
 
     @Override
+    public boolean equals(Object savingAccount){
+        Savings s = (Savings) savingAccount;
+        //System.out.println("CHECKING SHIZ IN HERE");
+        return super.equals(s) && (isLoyal == s.isLoyal);
+    }
+    @Override
     public double monthlyInterest() {
         return savingsInterestRate;
     }
