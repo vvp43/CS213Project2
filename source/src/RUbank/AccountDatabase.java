@@ -25,7 +25,7 @@ public class AccountDatabase {
     private int find(CollegeChecking a) {
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i] != null) {
-                if (accounts[i].equals(a) && accounts[i] instanceof CollegeChecking){
+                if (accounts[i] instanceof CollegeChecking){
                     CollegeChecking cmp = (CollegeChecking) accounts[i];
                     if(cmp.equals(a)){
                         return i;
@@ -39,8 +39,22 @@ public class AccountDatabase {
     private int find(Savings a) {
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i] != null) {
-                if (accounts[i].equals(a) && accounts[i] instanceof Savings){
+                if (accounts[i] instanceof Savings){
                     Savings cmp = (Savings) accounts[i];
+                    if(cmp.equals(a)){
+                        return i;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    private int find(MoneyMarket a) {
+        for (int i = 0; i < numAcct; i++) {
+            if (accounts[i] != null) {
+                if (accounts[i] instanceof MoneyMarket){
+                    MoneyMarket cmp = (MoneyMarket) accounts[i];
                     if(cmp.equals(a)){
                         return i;
                     }
@@ -155,6 +169,73 @@ public class AccountDatabase {
             }
         }
     } //add a new account
+
+    public boolean open(Savings account) {
+        if (numAcct == 0) {
+            grow();
+            accounts[0] = account;
+            return true;
+        } else {
+            if (!contains(account)) {
+                int temp = -1;
+                for (int i = 0; i < numAcct; i++) {
+                    if (accounts[i] == null) {
+                        temp = i;
+                        break;
+                    }
+                }
+                if (temp == -1) {
+                    grow();
+                    int temp2 = -1;
+                    for (int i = 0; i < numAcct; i++) {
+                        if (accounts[i] == null) {
+                            temp2 = i;
+                            break;
+                        }
+                    }
+                    accounts[temp2] = account;
+                } else {
+                    accounts[temp] = account;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+    } //add a new account
+    public boolean open(MoneyMarket account) {
+        if (numAcct == 0) {
+            grow();
+            accounts[0] = account;
+            return true;
+        } else {
+            if (!contains(account)) {
+                int temp = -1;
+                for (int i = 0; i < numAcct; i++) {
+                    if (accounts[i] == null) {
+                        temp = i;
+                        break;
+                    }
+                }
+                if (temp == -1) {
+                    grow();
+                    int temp2 = -1;
+                    for (int i = 0; i < numAcct; i++) {
+                        if (accounts[i] == null) {
+                            temp2 = i;
+                            break;
+                        }
+                    }
+                    accounts[temp2] = account;
+                } else {
+                    accounts[temp] = account;
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+    } //add a new account
     public boolean close(Account account) {
         if (!contains(account)) {
             return false;
@@ -207,6 +288,35 @@ public class AccountDatabase {
         return false;
     } //false if insufficient fund
 
+    public boolean withdraw(Savings account) {
+        if (isEmpty()){
+            return false;
+        } else
+        if ((accounts[find(account)].balance >= account.balance)) {
+            accounts[find(account)].balance -= account.balance;
+            return true;
+        }
+        return false;
+    } //false if insufficient fund
+
+    public boolean withdraw(MoneyMarket account) {
+        if (isEmpty() || (find(account) == -1)){
+            return false;
+        } else
+        if ((accounts[find(account)].balance >= account.balance)){
+            MoneyMarket temp = (MoneyMarket) accounts[find(account)];
+            if(temp.with() > 3){
+                System.out.println("GOT IN!");
+                temp.balance -= 10+account.balance;
+            }
+            else{
+                temp.balance -= account.balance;
+            }
+            temp.updateStatus();
+            return true;
+        }
+        return false;
+    } //false if insufficient fund
 
     public void deposit(Account account) {
     }
@@ -228,6 +338,7 @@ public class AccountDatabase {
         }
     }
 
+    // test method
     public void addy(Account a, int index){
         accounts[index] = a;
     }
@@ -237,27 +348,54 @@ public class AccountDatabase {
         AccountDatabase test = new AccountDatabase();
         Date temp = new Date(1776, 7, 4);
         Profile a = new Profile("john", "smith", temp);
-        Checking john = new Checking(a, 10000);
 
+        Checking john = new Checking(a, 10000);
+        Checking john2 = new Checking(a, 5000);
         test.open(john);
         //test.printtest();
-        Checking john2 = new Checking(a, 5000);
 
 //      System.out.println(john.holder);
 //      System.out.println(john2.holder);
         //test.withdraw(john2);
 
         CollegeChecking johnny = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
-        //System.out.println("DOES LIST CONTAIN JOHNNY 1: "+test.contains(johnny));
+        CollegeChecking johnny2 = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
         test.open(johnny);
+
+        Savings johnie = new Savings(a, 20000, false);
+        Savings johnie2 = new Savings(a, 5000, false);
+        test.open(johnie);
+
+        MoneyMarket johniey = new MoneyMarket(a, 20000, true, 0);
+        MoneyMarket johniey2 = new MoneyMarket(a, 2000, true, 0);
+        test.open(johniey);
         //test.addy(johnny, 1);
         //System.out.println("HOW ABOUT NOW SHOULD BE YES "+test.contains(johnny));
         test.printtest();
-        CollegeChecking johnny2 = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
 
         // NOTE IN ORDER TO WITHDRAW, YOU MUST CREATE AN OBJECT WITH EVERY VALUE EQUAL EXCEPT BALANCE
         System.out.println(test.withdraw(john2));
-        test.withdraw(johnny2);
+        System.out.println(test.withdraw(johnny2));
+        System.out.println(test.withdraw(johnie2));
+
+        // for updating 
+        System.out.println(test.withdraw(johniey2));
+        johniey2 = new MoneyMarket(a, 2000, true, 1);
+        System.out.println("is johniey equal to johniey 2: "+johniey.equals(johniey2));
+        System.out.println(test.withdraw(johniey2));
+
+        johniey2 = new MoneyMarket(a, 2000, true, 2);
+        System.out.println("is johniey equal to johniey 2: "+johniey.equals(johniey2));
+        System.out.println(test.withdraw(johniey2));
+
+        johniey2 = new MoneyMarket(a, 2000, true, 3);
+        System.out.println("is johniey equal to johniey 2: "+johniey.equals(johniey2));
+        System.out.println(test.withdraw(johniey2));
+
+        johniey2 = new MoneyMarket(a, 2000, true, 4);
+        System.out.println("is johniey equal to johniey 2: "+johniey.equals(johniey2));
+        System.out.println(test.withdraw(johniey2));
+
 
 
         //System.out.println("DOES JOHNNY 2 SAME NAME BAL DIF CAMPUS IN LIST? SHOULD BE NO"+test.contains(johnny2));
