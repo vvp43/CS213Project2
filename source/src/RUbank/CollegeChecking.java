@@ -34,11 +34,20 @@ public class CollegeChecking extends Checking {
         return super.equals(c) && campus.equals(c.getCampus());
     }
 
+    @Override
+    public String toString(){
+        return "College Checking::"+holder.getFname()+" "+holder.getLname()+" "
+                +holder.getDob().toString()+"::Balance $"+balance+"::"+campus;
+    }
+
     public static void main(String[] args) {
-//        CollegeChecking cc = new CollegeChecking(Campus.NEW_BRUNSWICK);
-//        System.out.println(cc.getCampus());
-//        System.out.println(cc.monthlyFee());
-//        System.out.println(cc.monthlyInterest());
+        Date a = new Date (1776, 7, 7);
+        Profile john = new Profile ("John", "johnson", a);
+        CollegeChecking cc = new CollegeChecking(john, 5000, Campus.NEW_BRUNSWICK);
+        System.out.println(cc.getCampus());
+        System.out.println(cc.toString());
+        System.out.println(cc.monthlyFee());
+        System.out.println(cc.monthlyInterest());
 
     }
 }

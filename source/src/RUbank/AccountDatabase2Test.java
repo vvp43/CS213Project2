@@ -170,43 +170,49 @@ public class AccountDatabase2Test {
         }
     }
 
+    public Account[] sort(Account[] sorted){
+        boolean swap;
+        do {
+            swap = false;
+            for (int i = 0; i < numAcct - 1; i++) {
+                if (sorted[i + 1] != null) {
+                    if (sorted[i].getClass().getSimpleName().compareToIgnoreCase(sorted[i + 1].getClass().getSimpleName()) > 0) {
+                        Account temp = sorted[i];
+                        sorted[i] = sorted[i + 1];
+                        sorted[i + 1] = temp;
+                        swap = true;
+                    }
+                }
+            }
+        } while (swap);
+
+        do {
+            swap = false;
+            for (int i = 0; i < numAcct - 1; i++) {
+                if (sorted[i + 1] != null) {
+                    if (sorted[i].compareTo(sorted[i+1]) > 1) { //need to test compaoreTo
+                        Account temp = sorted[i];
+                        sorted[i] = sorted[i + 1];
+                        sorted[i + 1] = temp;
+                        swap = true;
+                    }
+                }
+            }
+        } while (swap);
+        return sorted;
+    }
+
     public void printSorted() {
         if(accounts[0] != null) {
-            Account[] sorted = new Account[numAcct];
+            Account[] copy = new Account[numAcct];
             // copy array first
             for (int i = 0; i < numAcct; i++) {
                 if (accounts[i] != null) {
-                    sorted[i] = accounts[i];
+                    copy[i] = accounts[i];
                 }
             }
-            boolean swap;
-            do {
-                swap = false;
-                for (int i = 0; i < numAcct - 1; i++) {
-                    if (sorted[i + 1] != null) {
-                        if (sorted[i].getClass().getSimpleName().compareToIgnoreCase(sorted[i + 1].getClass().getSimpleName()) > 0) {
-                            Account temp = sorted[i];
-                            sorted[i] = sorted[i + 1];
-                            sorted[i + 1] = temp;
-                            swap = true;
-                        }
-                    }
-                }
-            } while (swap);
-            do {
-                swap = false;
-                for (int i = 0; i < numAcct - 1; i++) {
-                    if (sorted[i + 1] != null) {
-                        if (sorted[i].compareTo(sorted[i+1]) > 1) { //need to test compaoreTo
-                            Account temp = sorted[i];
-                            sorted[i] = sorted[i + 1];
-                            sorted[i + 1] = temp;
-                            swap = true;
-                        }
-                    }
-                }
-            } while (swap);
-            for (Account a : sorted) {
+            sort(copy);
+            for (Account a : copy) {
                 if (a != null) {
                     System.out.println(a);
                 }
@@ -214,9 +220,9 @@ public class AccountDatabase2Test {
         }
     } //sort by account type and profile
 
-//    public void printFeesAndInterests() {
-//
-//    } //calculate interests/fees
+    public void printFeesAndInterests() {
+
+    } //calculate interests/fees
 //
 //    public void printUpdatedBalances() {
 //    } //apply the interests/fees
@@ -243,15 +249,19 @@ public class AccountDatabase2Test {
         // test bed
         AccountDatabase2Test test = new AccountDatabase2Test();
         Date temp = new Date(1776, 7, 4);
+        Date temp2 = new Date(2005, 7, 4);
         Profile a = new Profile("john", "smith", temp);
         Profile ab = new Profile("john", "ssmith", temp);
-        Profile abc = new Profile("jo2hn", "ssmith", temp);
+        Profile abc = new Profile("jo2hn", "Dsmith", temp);
+        Profile abcd = new Profile("jo2hn", "Dsmith", temp2);
 
         Checking john = new Checking(a, 10000);
         Checking john2 = new Checking(a, 5000);
 
         CollegeChecking johnny = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
-        CollegeChecking johnny2 = new CollegeChecking(a, 10000, Campus.NEW_BRUNSWICK);
+        CollegeChecking johnny2 = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
+        CollegeChecking johnnyD = new CollegeChecking(abc, 10000, Campus.NEW_BRUNSWICK);
+        CollegeChecking johnnyDe = new CollegeChecking(abcd, 10000, Campus.NEW_BRUNSWICK);
 
         MoneyMarket johniey = new MoneyMarket(a, 20000, true, 0);
         MoneyMarket johniey2 = new MoneyMarket(a, 2000, true, 0);
@@ -262,7 +272,9 @@ public class AccountDatabase2Test {
         test.open(john);
         test.open(johnny);
         test.open(johnie);
+        test.open(johnnyDe);
         test.open(johniey);
+        test.open(johnnyD);
 
         System.out.println("regular print");
         test.printtest();

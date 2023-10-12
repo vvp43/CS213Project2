@@ -61,6 +61,10 @@ public class Date implements Comparable<Date> {
      * @return 1 if current date is after input date, 0 if current date is the same with output date, -1 if current date is before input date
      */
     @Override
+    public String toString(){
+        return month+"/"+day+"/"+year;
+    }
+    @Override
     public int compareTo(Date input) {
         int inputDateInt = input.year * 10000 + input.month * 100 + input.day;
         int currentDateInt = this.year * 10000 + this.month * 100 + this.day;
