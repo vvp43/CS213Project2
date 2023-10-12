@@ -18,6 +18,14 @@ public class Savings extends Account{
         this.isLoyal = isLoyal;
     }
 
+    public void updateStatus(){
+        if(balance < 2000){
+            isLoyal = false;
+        }
+        else{
+            isLoyal = true;
+        }
+    }
     @Override
     public boolean equals(Object savingAccount){
         Savings s = (Savings) savingAccount;

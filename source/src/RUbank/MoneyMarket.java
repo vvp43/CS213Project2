@@ -22,14 +22,7 @@ public class MoneyMarket extends Savings{
         withdrawal++;
         return temp;
     }
-    public void updateStatus(){
-        if(balance < 2000){
-            isLoyal = false;
-        }
-        else{
-            isLoyal = true;
-        }
-    }
+
     @Override
     public boolean equals(Object mmAccount){
         MoneyMarket m = (MoneyMarket) mmAccount;
