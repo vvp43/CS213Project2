@@ -1,5 +1,7 @@
 package RUbank;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author
@@ -41,15 +43,20 @@ public class MoneyMarket extends Savings{
             return marketSavingsMonthlyFee;
         }
     }
+    public void applyMonthlyInterestsAndFees(){
+        balance-=monthlyFee();
+        balance+=monthlyInterest();
+    }
     @Override
     public String toString(){
+        DecimalFormat df = new DecimalFormat("#0.00");
         if(isLoyal){
             return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
-                    +holder.getDob().toString()+"::Balance $"+balance+"::is loyal::withdrawl "+withdrawal;
+                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::is loyal::withdrawl "+withdrawal;
         }
         else{
             return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
-                    +holder.getDob().toString()+"::Balance $"+balance+"::withdrawl "+withdrawal;
+                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::withdrawl "+withdrawal;
         }
     }
     @Override

@@ -1,6 +1,7 @@
 package RUbank;
 
 import java.sql.SQLOutput;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -27,9 +28,15 @@ public class CollegeChecking extends Checking {
         return this.campus;
     }
 
+
     @Override
     public double monthlyFee() {
         return 0;
+    }
+
+    public void applyMonthlyInterestsAndFees(){
+        balance-=monthlyFee();
+        balance+=monthlyInterest();
     }
     @Override
     public boolean equals(Object collegeCheckingAccount){
@@ -39,8 +46,9 @@ public class CollegeChecking extends Checking {
     }
     @Override
     public String toString(){
+        DecimalFormat df = new DecimalFormat("#0.00");
         return "College Checking::"+holder.getFname()+" "+holder.getLname()+" "
-                +holder.getDob().toString()+"::Balance $"+balance+"::"+campus;
+                +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::"+campus;
     }
 
     public static void main(String[] args) {
@@ -51,6 +59,7 @@ public class CollegeChecking extends Checking {
         System.out.println(cc.toString());
         System.out.println(cc.monthlyFee());
         System.out.println(cc.monthlyInterest());
+        cc.applyMonthlyInterestsAndFees();
 
     }
 }

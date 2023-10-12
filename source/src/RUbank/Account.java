@@ -1,4 +1,5 @@
 package RUbank;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -15,10 +16,15 @@ public abstract class Account implements Comparable<Account>{
         this.holder = holder;
         this.balance = balance;
     }
+
+    public void applyMonthlyInterestsAndFees(){
+
+    }
     @Override
     public String toString(){
+        DecimalFormat df = new DecimalFormat("#0.00");
         return "Checking::"+holder.getFname()+" "+holder.getLname()+" "
-                +holder.getDob().toString()+"::Balance $"+balance;
+                +holder.getDob().toString()+"::Balance $"+df.format(balance);
     }
     public boolean equals(Object account){
         Account a = (Account) account;

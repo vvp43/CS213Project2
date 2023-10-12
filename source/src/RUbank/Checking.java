@@ -8,9 +8,7 @@ package RUbank;
 public class Checking extends Account{
     //constants
     final double checkingMonthlyFee = 12.0;
-    final double checkingInterestRate = 0.01   ;
-
-    double m = monthlyInterest();
+    final double checkingInterestRate = 0.01;
 
     @Override
     public double monthlyInterest() {
@@ -24,6 +22,12 @@ public class Checking extends Account{
         } else {
             return checkingMonthlyFee;
         }
+    }
+
+    @Override
+    public void applyMonthlyInterestsAndFees(){
+        balance-=monthlyFee();
+        balance+=monthlyInterest();
     }
 
     public Checking(Profile holder, double balance) {

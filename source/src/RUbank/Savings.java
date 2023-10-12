@@ -1,5 +1,7 @@
 package RUbank;
 
+import java.text.DecimalFormat;
+
 /**
  *
  * @author
@@ -29,6 +31,7 @@ public class Savings extends Account{
 
     @Override
     public double monthlyInterest() {
+        DecimalFormat df = new DecimalFormat("#0.00");
         if(isLoyal){
             return balance*((savingsInterestRate+0.0025)/12);
         }
@@ -46,15 +49,21 @@ public class Savings extends Account{
         }
     }
 
+    public void applyMonthlyInterestsAndFees(){
+        balance-=monthlyFee();
+        balance+=monthlyInterest();
+    }
+
     @Override
     public String toString(){
+        DecimalFormat df = new DecimalFormat("#0.00");
         if(isLoyal){
             return "Savings::"+holder.getFname()+" "+holder.getLname()+" "
-                    +holder.getDob().toString()+"::Balance $"+balance+"::is loyal";
+                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::is loyal";
         }
         else{
             return "Savings::"+holder.getFname()+" "+holder.getLname()+" "
-                    +holder.getDob().toString()+"::Balance $"+balance;
+                    +holder.getDob().toString()+"::Balance $"+df.format(balance);
         }
     }
 

@@ -1,4 +1,5 @@
 package RUbank;
+import java.text.DecimalFormat;
 
 /**
  *
@@ -211,20 +212,51 @@ public class AccountDatabase2Test {
                 }
             }
             sort(copy);
+            System.out.println("*Accounts sorted by account type and profile.");
             for (Account a : copy) {
                 if (a != null) {
                     System.out.println(a.toString());
                 }
             }
+            System.out.println("*end of list");
         }
     } //sort by account type and profile
 
     public void printFeesAndInterests() {
+        DecimalFormat df = new DecimalFormat("#0.00");
+        if(accounts[0] != null) {
+            Account[] copy = new Account[numAcct];
+            // copy array first
+            for (int i = 0; i < numAcct; i++) {
+                if (accounts[i] != null) {
+                    copy[i] = accounts[i];
+                }
+            }
+            sort(copy);
+            System.out.println("*list of accounts with fee and monthly interest");
+            for (Account a : copy) {
+                if (a != null) {
+                    System.out.println(a.toString()+"::fee: $"+df.format(a.monthlyFee())+"::monthly interest $"+df.format(a.monthlyInterest()));
+                }
+            }
+            System.out.println("end of list.");
+        }
 
     } //calculate interests/fees
 //
-//    public void printUpdatedBalances() {
-//    } //apply the interests/fees
+    public void printUpdatedBalances() {
+        DecimalFormat df = new DecimalFormat("#0.00");
+        if(accounts[0] != null && numAcct != 0) {
+            System.out.println("*list of accounts with fee and monthly interest");
+            for (Account a : accounts) {
+                if (a != null) {
+                    a.applyMonthlyInterestsAndFees();
+                }
+            }
+            System.out.println("end of list.");
+        }
+
+    } //apply the interests/fees
 
     public void printtest(){
         for(Account i : accounts){
@@ -255,7 +287,7 @@ public class AccountDatabase2Test {
         Profile abc = new Profile("jo2hn", "Dsmith", temp);
         Profile abcd = new Profile("jo2hn", "Dsmith", temp2);
 
-        Checking john = new Checking(a, 10000);
+        Checking john = new Checking(a, 1200);
         Checking john2 = new Checking(a, 5000);
 
         CollegeChecking johnny = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
@@ -281,6 +313,9 @@ public class AccountDatabase2Test {
 
         System.out.println("printed by name");
         test.printSorted();
+
+        System.out.println("printed with fees and interests");
+        test.printFeesAndInterests();
 
         test.withdraw(john2);
         test.withdraw(johnny2);
