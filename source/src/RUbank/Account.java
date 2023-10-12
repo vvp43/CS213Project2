@@ -24,7 +24,7 @@ public abstract class Account implements Comparable<Account>{
     }
 
     @Override
-    public int compareTo(Account a){
+    public int compareTo(Account a){ //i think i can make it compare everything in this lets se
         int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
         if(temp != 0){
             return temp;
