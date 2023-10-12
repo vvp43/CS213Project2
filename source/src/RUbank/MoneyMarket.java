@@ -46,6 +46,7 @@ public class MoneyMarket extends Savings{
     public void applyMonthlyInterestsAndFees(){
         balance-=monthlyFee();
         balance+=monthlyInterest();
+        withdrawal = 0;
     }
     @Override
     public String toString(){

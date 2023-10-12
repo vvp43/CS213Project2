@@ -247,14 +247,27 @@ public class AccountDatabase2Test {
     public void printUpdatedBalances() {
         DecimalFormat df = new DecimalFormat("#0.00");
         if(accounts[0] != null && numAcct != 0) {
-            System.out.println("*list of accounts with fee and monthly interest");
             for (Account a : accounts) {
                 if (a != null) {
                     a.applyMonthlyInterestsAndFees();
                 }
             }
-            System.out.println("end of list.");
         }
+        Account[] copy = new Account[numAcct];
+        // copy array first
+        for (int i = 0; i < numAcct; i++) {
+            if (accounts[i] != null) {
+                copy[i] = accounts[i];
+            }
+        }
+        sort(copy);
+        System.out.println("*list of accounts with fees and interests applied.");
+        for (Account a : copy) {
+            if (a != null) {
+                System.out.println(a.toString());
+            }
+        }
+        System.out.println("end of list.");
 
     } //apply the interests/fees
 
@@ -316,6 +329,13 @@ public class AccountDatabase2Test {
 
         System.out.println("printed with fees and interests");
         test.printFeesAndInterests();
+
+        System.out.println("printed with updates");
+        test.printUpdatedBalances();
+
+        System.out.println();
+        System.out.println("Check if list is now updated");
+        test.printSorted();
 
         test.withdraw(john2);
         test.withdraw(johnny2);

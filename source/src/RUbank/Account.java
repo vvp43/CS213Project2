@@ -18,7 +18,8 @@ public abstract class Account implements Comparable<Account>{
     }
 
     public void applyMonthlyInterestsAndFees(){
-
+        balance+=monthlyInterest();
+        balance-=monthlyFee();
     }
     @Override
     public String toString(){
