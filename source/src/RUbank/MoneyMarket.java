@@ -10,17 +10,36 @@ public class MoneyMarket extends Savings{
     private int withdrawal;
 
     //Constants
-    final double marketSavingsInterestRate = 4.5/100;
+    final double marketSavingsInterestRate = 0.045;
     final double marketSavingsMonthlyFee= savingsMonthlyFee;
 
     public MoneyMarket(Profile holder, double balance, boolean isLoyal, int withdrawal) {
         super(holder, balance, isLoyal);
+        this.isLoyal = true;
         this.withdrawal = withdrawal;
     }
     public int with(){
         int temp = withdrawal;
         withdrawal++;
         return temp;
+    }
+    @Override
+    public double monthlyInterest() {
+        if(isLoyal){
+            return balance*((marketSavingsInterestRate+0.0025)/12);
+        }
+        else{
+            return balance*((marketSavingsInterestRate)/12);
+        }
+
+    }
+    @Override
+    public double monthlyFee() {
+        if (balance >= 2000) {
+            return 0;
+        } else {
+            return marketSavingsMonthlyFee;
+        }
     }
     @Override
     public String toString(){

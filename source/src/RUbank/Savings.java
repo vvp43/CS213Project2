@@ -11,7 +11,7 @@ public class Savings extends Account{
 
     //Constants
     final double savingsMonthlyFee = 25;
-    final double savingsInterestRate = 4.0/100;
+    final double savingsInterestRate = 0.04;
 
     public Savings(Profile holder, double balance, boolean isLoyal) {
         super(holder, balance);
@@ -28,6 +28,25 @@ public class Savings extends Account{
     }
 
     @Override
+    public double monthlyInterest() {
+        if(isLoyal){
+            return balance*((savingsInterestRate+0.0025)/12);
+        }
+        else{
+            return balance*((savingsInterestRate)/12);
+        }
+
+    }
+    @Override
+    public double monthlyFee() {
+        if (balance >= 500) {
+            return 0;
+        } else {
+            return savingsMonthlyFee;
+        }
+    }
+
+    @Override
     public String toString(){
         if(isLoyal){
             return "Savings::"+holder.getFname()+" "+holder.getLname()+" "
@@ -38,20 +57,12 @@ public class Savings extends Account{
                     +holder.getDob().toString()+"::Balance $"+balance;
         }
     }
+
     @Override
     public boolean equals(Object savingAccount){
         Savings s = (Savings) savingAccount;
         //System.out.println("CHECKING SHIZ IN HERE");
         return super.equals(s) && (isLoyal == s.isLoyal);
-    }
-    @Override
-    public double monthlyInterest() {
-        return savingsInterestRate;
-    }
-
-    @Override
-    public double monthlyFee() {
-        return savingsMonthlyFee;
     }
 
     @Override

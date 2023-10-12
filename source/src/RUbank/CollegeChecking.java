@@ -13,7 +13,7 @@ public class CollegeChecking extends Checking {
 
     //Constants
     final double collegeCheckingFee = 12.0;
-    final double collegeCheckingInterestRate = 1.0/100;
+    final double collegeCheckingInterestRate = 0.01;
 
     public CollegeChecking(Profile holder, double balance, Campus campus) {
         super(holder, balance);
@@ -28,12 +28,15 @@ public class CollegeChecking extends Checking {
     }
 
     @Override
+    public double monthlyFee() {
+        return 0;
+    }
+    @Override
     public boolean equals(Object collegeCheckingAccount){
         CollegeChecking c = (CollegeChecking) collegeCheckingAccount;
         //System.out.println("CHECKING SHIZ IN HERE");
         return super.equals(c) && campus.equals(c.getCampus());
     }
-
     @Override
     public String toString(){
         return "College Checking::"+holder.getFname()+" "+holder.getLname()+" "
