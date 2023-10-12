@@ -26,6 +26,18 @@ public class Savings extends Account{
             isLoyal = true;
         }
     }
+
+    @Override
+    public String toString(){
+        if(isLoyal){
+            return "Savings::"+holder.getFname()+" "+holder.getLname()+" "
+                    +holder.getDob().toString()+"::Balance $"+balance+"::is loyal";
+        }
+        else{
+            return "Savings::"+holder.getFname()+" "+holder.getLname()+" "
+                    +holder.getDob().toString()+"::Balance $"+balance;
+        }
+    }
     @Override
     public boolean equals(Object savingAccount){
         Savings s = (Savings) savingAccount;

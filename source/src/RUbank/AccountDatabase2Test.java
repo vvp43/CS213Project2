@@ -185,7 +185,6 @@ public class AccountDatabase2Test {
                 }
             }
         } while (swap);
-
         do {
             swap = false;
             for (int i = 0; i < numAcct - 1; i++) {
@@ -214,7 +213,7 @@ public class AccountDatabase2Test {
             sort(copy);
             for (Account a : copy) {
                 if (a != null) {
-                    System.out.println(a);
+                    System.out.println(a.toString());
                 }
             }
         }
@@ -230,7 +229,8 @@ public class AccountDatabase2Test {
     public void printtest(){
         for(Account i : accounts){
             if(i != null){
-                System.out.println("Account : "+i+" BAL: "+i.balance);
+                System.out.println(i);
+                //System.out.println("Account : "+i+" BAL: "+i.balance);
             }
         }
     }

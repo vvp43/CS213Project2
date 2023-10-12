@@ -15,6 +15,11 @@ public abstract class Account implements Comparable<Account>{
         this.holder = holder;
         this.balance = balance;
     }
+    @Override
+    public String toString(){
+        return "Checking::"+holder.getFname()+" "+holder.getLname()+" "
+                +holder.getDob().toString()+"::Balance $"+balance;
+    }
     public boolean equals(Object account){
         Account a = (Account) account;
         //System.out.println("CHECKING SHIT IN HERE");
@@ -27,15 +32,15 @@ public abstract class Account implements Comparable<Account>{
     public int compareTo(Account a){ //i think i can make it compare everything in this lets se
         int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
         if(temp != 0){
-            return temp;
+            return temp; // return if last name is alphabetically first
         }
         else{
             int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
             if(temp2 != 0){
-                return temp2;
+                return temp2; // return if last name is alphabetically same but different first name
             }
             else{
-                return holder.getDob().compareTo(a.holder.getDob());
+                return holder.getDob().compareTo(a.holder.getDob()); // return if everythihg before is equal but diff DOB
             }
         }
     }

@@ -22,7 +22,17 @@ public class MoneyMarket extends Savings{
         withdrawal++;
         return temp;
     }
-
+    @Override
+    public String toString(){
+        if(isLoyal){
+            return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
+                    +holder.getDob().toString()+"::Balance $"+balance+"::is loyal::withdrawl "+withdrawal;
+        }
+        else{
+            return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
+                    +holder.getDob().toString()+"::Balance $"+balance+"::withdrawl "+withdrawal;
+        }
+    }
     @Override
     public boolean equals(Object mmAccount){
         MoneyMarket m = (MoneyMarket) mmAccount;
