@@ -52,7 +52,6 @@ public class AccountDatabase2Test {
         return find(account) != -1;
     } //overload if necessary
     public boolean open(Account account) {
-        //System.out.println(find(account));
         if (numAcct == 0) {
             grow();
             accounts[0] = account;
@@ -98,25 +97,18 @@ public class AccountDatabase2Test {
             if (index == numAcct - 1) {
                 accounts[index] = null;
             } else {
-                accounts[index] = null;
-                for (int j = index; j < numAcct - 1; j++) {
-                    printy();
-                    if (accounts[j + 1] == null ) {
-                        accounts[j] = accounts[j+1];
-                    }
-                    else {
-                        accounts[j] = null;
-                    }
-
+                for(int i = index; i < numAcct-1; i++){
+                    accounts[i] = accounts[i+1];
                 }
-                return true;
+                accounts[numAcct-1] = null;
+                //printy();
             }
         }
         return true;
     } //remove the given account
 
     public boolean withdraw(Account account) {
-        if (isEmpty()) {
+        if (isEmpty() || find(account) == -1) {
             return false;
         } else
             if (account.getClass() == Checking.class ||
@@ -154,17 +146,80 @@ public class AccountDatabase2Test {
         return false;
     } //false if insufficient fund
 
-    public void deposit(Account account) {
+    public void deposit(Account account) { // handling invalid numbers of deposits should be in transmanager
+        if (isEmpty()) {
+            System.out.println("Account Database is empty!");
+        } else
+        if (account.getClass() == Checking.class ||
+                account.getClass() == CollegeChecking.class) { // depositing from checking/college
+            System.out.println("DEPOSITING...");
+            accounts[find(account)].balance += account.balance;
+        }
+        else if(account.getClass() == Savings.class){ // depositing from savings
+            Savings temp = (Savings) accounts[find(account)];
+            System.out.println("DEPOSITING...");
+            temp.balance += account.balance;
+            temp.updateStatus();
+        }
+        else{
+            //printtest();
+            MoneyMarket temp = (MoneyMarket) accounts[find(account)]; // depositing from MM
+            System.out.println("DEPOSITING...");
+            temp.balance += account.balance;
+            temp.updateStatus();
+        }
     }
 
     public void printSorted() {
+        if(accounts[0] != null) {
+            Account[] sorted = new Account[numAcct];
+            // copy array first
+            for (int i = 0; i < numAcct; i++) {
+                if (accounts[i] != null) {
+                    sorted[i] = accounts[i];
+                }
+            }
+            boolean swap;
+            do {
+                swap = false;
+                for (int i = 0; i < numAcct - 1; i++) {
+                    if (sorted[i + 1] != null) {
+                        if (sorted[i].getClass().getSimpleName().compareToIgnoreCase(sorted[i + 1].getClass().getSimpleName()) > 0) {
+                            Account temp = sorted[i];
+                            sorted[i] = sorted[i + 1];
+                            sorted[i + 1] = temp;
+                            swap = true;
+                        }
+                    }
+                }
+            } while (swap);
+            do {
+                swap = false;
+                for (int i = 0; i < numAcct - 1; i++) {
+                    if (sorted[i + 1] != null) {
+                        if (sorted[i].compareTo(sorted[i+1]) > 1) { //need to test compaoreTo
+                            Account temp = sorted[i];
+                            sorted[i] = sorted[i + 1];
+                            sorted[i + 1] = temp;
+                            swap = true;
+                        }
+                    }
+                }
+            } while (swap);
+            for (Account a : sorted) {
+                if (a != null) {
+                    System.out.println(a);
+                }
+            }
+        }
     } //sort by account type and profile
 
-    public void printFeesAndInterests() {
-    } //calculate interests/fees
-
-    public void printUpdatedBalances() {
-    } //apply the interests/fees
+//    public void printFeesAndInterests() {
+//
+//    } //calculate interests/fees
+//
+//    public void printUpdatedBalances() {
+//    } //apply the interests/fees
 
     public void printtest(){
         for(Account i : accounts){
@@ -208,9 +263,12 @@ public class AccountDatabase2Test {
         test.open(johnny);
         test.open(johnie);
         test.open(johniey);
-        System.out.println("HUH: " +johniey.equals(johniey2));
 
+        System.out.println("regular print");
         test.printtest();
+
+        System.out.println("printed by name");
+        test.printSorted();
 
         test.withdraw(john2);
         test.withdraw(johnny2);
@@ -225,12 +283,30 @@ public class AccountDatabase2Test {
         MoneyMarket johniey22222 = new MoneyMarket(a, 2000, true, 4);
         test.withdraw(johniey22222);
 
+        MoneyMarket johniey222222 = new MoneyMarket(a, 2000, true, 5);
         test.printtest();
+
+        System.out.println("Depositing");
+        test.deposit(john2); // checking
+        test.deposit(johnny2); // college
+        test.deposit(johnie2); // savings
+        test.deposit(johniey222222); // money market
+
+        test.printtest();
+
         System.out.println("ACCS AFTER CLOSING: ");
         test.close(john);
-        //test.close(johnny2);
+        test.close(johniey);
+        test.close(johnny);
+        test.close(johnie);
 
-        //test.printtest();
+        System.out.println("");
+
+        test.printtest();
+        test.open(john); // check
+
+        System.out.println("reopen test");
+        test.printtest();
 
 //        test.open(john);
 //        test.open(john2);

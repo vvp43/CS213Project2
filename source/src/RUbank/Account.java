@@ -22,4 +22,21 @@ public abstract class Account implements Comparable<Account>{
                 holder.getLname().equalsIgnoreCase(a.holder.getLname()) &&
                 holder.getDob().equals(a.holder.getDob());
     }
+
+    @Override
+    public int compareTo(Account a){
+        int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
+        if(temp != 0){
+            return temp;
+        }
+        else{
+            int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
+            if(temp2 != 0){
+                return temp2;
+            }
+            else{
+                return holder.getDob().compareTo(a.holder.getDob());
+            }
+        }
+    }
 }
