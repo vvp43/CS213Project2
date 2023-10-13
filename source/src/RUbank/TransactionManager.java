@@ -32,6 +32,8 @@ public class TransactionManager {
         int month = Integer.parseInt(dateArr[0]);
         int day = Integer.parseInt(dateArr[1]);
         int year = Integer.parseInt(dateArr[2]);
+
+
         //Create Date object and return
         return new Date(year, month, day);
     }
@@ -107,29 +109,29 @@ public class TransactionManager {
     private Account createAccountFromStrings(String accountType, String fName, String lName, String date, double balance, String campus, String isLoyal, String withdraw) {
         //Create Date object
         Date dateObj = createDateFromString(date);
-
+        if (!dateObj.isValid()) {
+            Profile holder = new Profile(fName, lName, dateObj);
+            if (accountType.equals("C")) {
+                return new Checking(holder, balance);
+            } else if (accountType.equals("CC")) {
+                Campus camp = createCampusFromString(campus);
+                return new CollegeChecking(holder, balance, camp);
+            } else if (accountType.equals("S")) {
+                boolean loyalty = createLoyaltyFromString(isLoyal);
+                return new Savings(holder, balance, loyalty);
+            } else {
+                return new MoneyMarket(holder, balance, true, 0);
+            }
+        }
+        return null;
         //Create Profile object
-        Profile holder = new Profile(fName, lName, dateObj);
-
-
-
-        if(accountType.equals("C")){
-            return new Checking(holder, balance);
-        }
-        else if(accountType.equals("CC")){
-            Campus camp = createCampusFromString(campus);
-            return new CollegeChecking(holder, balance, camp);
-        }
-        else if(accountType.equals("S")){
-            boolean loyalty = createLoyaltyFromString(isLoyal);
-            return new Savings(holder, balance, loyalty);
-        }
-        else {
-            return new MoneyMarket(holder, balance, true, 0);
-        }
-
-
     }
+
+
+
+
+
+
     /**
      * operationA() method: Helper method used to call the .open() method in AccountDatabase,
      * used to check for any errors in input before opening an account
@@ -139,10 +141,7 @@ public class TransactionManager {
      */
     private void operationO(Account a, AccountDatabase ad) {
         //Check if any elements of event is invalid and display error message
-        Date date = a.holder.getDob();
-        if(!date.isValid()){
-            return;
-        }
+
         if(a.getClass() == MoneyMarket.class && a.balance < 2000) {
             System.out.println("Minimum of $2000 to open a Money Market account.");
             return;

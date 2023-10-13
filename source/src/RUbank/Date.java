@@ -185,7 +185,6 @@ public class Date implements Comparable<Date> {
         int currentYear = curr.get(Calendar.YEAR)-16;
         int currentMonth = curr.get(Calendar.MONTH) + 1;
         int currentDay = curr.get(Calendar.DAY_OF_MONTH);
-
         if(inputDate.getYear() <= currentYear && inputDate.getMonth() <= currentMonth &&
                 inputDate.getDay() <= currentDay){
             return true;
