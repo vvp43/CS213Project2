@@ -80,7 +80,7 @@ public class TransactionManager {
      * @param a Account to be opened
      * @param ad , short for Account Database
      */
-    private void operationO(Account a, AccountDatabase2Test ad) {
+    private void operationO(Account a, AccountDatabase ad) {
         //Check if any elements of event is invalid and display error message
         Date date = a.holder.getDob();
         if(!date.isValid()){
@@ -110,7 +110,7 @@ public class TransactionManager {
      * @param a Account to be opened
      * @param ad , short for Account Database
      */
-    private void operationC(Account a, AccountDatabase2Test ad) {
+    private void operationC(Account a, AccountDatabase ad) {
         //Create Date object
         //Check if any elements of event is invalid and display error message
         if (!a.holder.getDob().isValid()) {
@@ -130,7 +130,7 @@ public class TransactionManager {
      *
      * @param ad ,short for Account Database
      */
-    private void operationP(AccountDatabase2Test ad) {
+    private void operationP(AccountDatabase ad) {
         ad.printSorted();
     }
 
@@ -140,7 +140,7 @@ public class TransactionManager {
      *
      * @param ad ,short for Account Database
      */
-    private void operationPI(AccountDatabase2Test ad) {
+    private void operationPI(AccountDatabase ad) {
         ad.printFeesAndInterests();
     }
 
@@ -151,27 +151,28 @@ public class TransactionManager {
      *
      * @param ad ,short for Account Database
      */
-    private void operationUB(AccountDatabase2Test ad) {
+    private void operationUB(AccountDatabase ad) {
         ad.printUpdatedBalances();
     }
-//
-//
-//    /**
-//     * run() method
-//     */
-//    public void run() {
-//        System.out.println("Event Organizer running...\n");
-//        Scanner scanObj = new Scanner(System.in);
-//        boolean programRun = true;
-//        EventCalendar eventCalendar = new EventCalendar();
-//        while (programRun) {
-//            String command = scanObj.nextLine();
-//            if (command.equals("")) continue;
-//            String[] inputList = command.replaceAll("(^\\s+|\\s+$)", "").split("\\s+");//split the whole line into elements of String array
-//            String firstCMD = inputList[0];
-//            if (!isValidCommand(firstCMD)) {
-//                System.out.println(firstCMD + " is an invalid command!");
-//            } else {
+
+
+    /**
+     * run() method
+     */
+    public void run() {
+        System.out.println("Event Organizer running...\n");
+        Scanner scanObj = new Scanner(System.in);
+        boolean programRun = true;
+        AccountDatabase eventCalendar = new AccountDatabase();
+        while (programRun) {
+            String command = scanObj.nextLine();
+            if (command.equals("")) continue;
+            String[] inputList = command.replaceAll("(^\\s+|\\s+$)", "").split("\\s+");//split the whole line into elements of String array
+            String firstCMD = inputList[0];
+            if (!isValidCommand(firstCMD)) {
+                System.out.println(firstCMD + " is an invalid command!");
+            } else {
+
 //                switch (firstCMD) {
 //                    case "Q":
 //                        programRun = false;
@@ -200,7 +201,7 @@ public class TransactionManager {
 //                        break;
 //
 //                }
-//            }
-//        }
-//    }
+            }
+        }
+    }
 }
