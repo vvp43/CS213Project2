@@ -10,6 +10,9 @@ public class AccountDatabase {
     private Account[] accounts; //list of various types of accounts
     private int numAcct; //number of accounts in the array
 
+    public Account[] getAccounts(){
+        return this.accounts;
+    }
     private int find(Account a) {
         for (int i = 0; i < numAcct; i++) {
             if (accounts[i] != null) {
@@ -302,79 +305,82 @@ public class AccountDatabase {
         Profile abcd = new Profile("jo2hn", "Dsmith", temp2);
 
         Checking john = new Checking(a, 1200);
-        Checking john2 = new Checking(a, 5000);
 
-        CollegeChecking johnny = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
-        CollegeChecking johnny2 = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
-        CollegeChecking johnnyD = new CollegeChecking(abc, 10000, Campus.NEW_BRUNSWICK);
-        CollegeChecking johnnyDe = new CollegeChecking(abcd, 10000, Campus.NEW_BRUNSWICK);
-
-        MoneyMarket johniey = new MoneyMarket(a, 20000, true, 0);
-        MoneyMarket johniey2 = new MoneyMarket(a, 2000, true, 0);
-
-        Savings johnie = new Savings(a, 20000, true);
-        Savings johnie2 = new Savings(a, 5000, true);
-
-        test.open(john);
-        test.open(johnny);
-        test.open(johnie);
-        test.open(johnnyDe);
-        test.open(johniey);
-        test.open(johnnyD);
-
-        System.out.println("regular print");
-        test.printtest();
-
-        System.out.println("printed by name");
-        test.printSorted();
-
-        System.out.println("printed with fees and interests");
-        test.printFeesAndInterests();
-
-        System.out.println("printed with updates");
-        test.printUpdatedBalances();
-
-        System.out.println();
-        System.out.println("Check if list is now updated");
-        test.printSorted();
-
-        test.withdraw(john2);
-        test.withdraw(johnny2);
-        test.withdraw(johnie2);
-        test.withdraw(johniey2);
-        MoneyMarket johniey22 = new MoneyMarket(a, 2000, true, 1);
-        test.withdraw(johniey22);
-        MoneyMarket johniey222 = new MoneyMarket(a, 2000, true, 2);
-        test.withdraw(johniey222);
-        MoneyMarket johniey2222 = new MoneyMarket(a, 2000, true, 3);
-        test.withdraw(johniey2222);
-        MoneyMarket johniey22222 = new MoneyMarket(a, 2000, true, 4);
-        test.withdraw(johniey22222);
-
-        MoneyMarket johniey222222 = new MoneyMarket(a, 2000, true, 5);
-        test.printtest();
-
-        System.out.println("Depositing");
-        test.deposit(john2); // checking
-        test.deposit(johnny2); // college
-        test.deposit(johnie2); // savings
-        test.deposit(johniey222222); // money market
-
-        test.printtest();
-
-        System.out.println("ACCS AFTER CLOSING: ");
-        test.close(john);
-        test.close(johniey);
-        test.close(johnny);
-        test.close(johnie);
-
-        System.out.println("");
-
-        test.printtest();
-        test.open(john); // check
-
-        System.out.println("reopen test");
-        test.printtest();
+        System.out.println(test.open(john));
+        System.out.println(test.open(john));
+//        Checking john2 = new Checking(a, 5000);
+//
+//        CollegeChecking johnny = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
+//        CollegeChecking johnny2 = new CollegeChecking(a, 14000, Campus.NEW_BRUNSWICK);
+//        CollegeChecking johnnyD = new CollegeChecking(abc, 10000, Campus.NEW_BRUNSWICK);
+//        CollegeChecking johnnyDe = new CollegeChecking(abcd, 10000, Campus.NEW_BRUNSWICK);
+//
+//        MoneyMarket johniey = new MoneyMarket(a, 20000, true, 0);
+//        MoneyMarket johniey2 = new MoneyMarket(a, 2000, true, 0);
+//
+//        Savings johnie = new Savings(a, 20000, true);
+//        Savings johnie2 = new Savings(a, 5000, true);
+//
+//        test.open(john);
+//        test.open(johnny);
+//        test.open(johnie);
+//        test.open(johnnyDe);
+//        test.open(johniey);
+//        test.open(johnnyD);
+//
+//        System.out.println("regular print");
+//        test.printtest();
+//
+//        System.out.println("printed by name");
+//        test.printSorted();
+//
+//        System.out.println("printed with fees and interests");
+//        test.printFeesAndInterests();
+//
+//        System.out.println("printed with updates");
+//        test.printUpdatedBalances();
+//
+//        System.out.println();
+//        System.out.println("Check if list is now updated");
+//        test.printSorted();
+//
+//        test.withdraw(john2);
+//        test.withdraw(johnny2);
+//        test.withdraw(johnie2);
+//        test.withdraw(johniey2);
+//        MoneyMarket johniey22 = new MoneyMarket(a, 2000, true, 1);
+//        test.withdraw(johniey22);
+//        MoneyMarket johniey222 = new MoneyMarket(a, 2000, true, 2);
+//        test.withdraw(johniey222);
+//        MoneyMarket johniey2222 = new MoneyMarket(a, 2000, true, 3);
+//        test.withdraw(johniey2222);
+//        MoneyMarket johniey22222 = new MoneyMarket(a, 2000, true, 4);
+//        test.withdraw(johniey22222);
+//
+//        MoneyMarket johniey222222 = new MoneyMarket(a, 2000, true, 5);
+//        test.printtest();
+//
+//        System.out.println("Depositing");
+//        test.deposit(john2); // checking
+//        test.deposit(johnny2); // college
+//        test.deposit(johnie2); // savings
+//        test.deposit(johniey222222); // money market
+//
+//        test.printtest();
+//
+//        System.out.println("ACCS AFTER CLOSING: ");
+//        test.close(john);
+//        test.close(johniey);
+//        test.close(johnny);
+//        test.close(johnie);
+//
+//        System.out.println("");
+//
+//        test.printtest();
+//        test.open(john); // check
+//
+//        System.out.println("reopen test");
+//        test.printtest();
 
         //everything after this is unimportant
 //        test.open(john);

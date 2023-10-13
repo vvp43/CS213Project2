@@ -36,6 +36,19 @@ public class TransactionManager {
         return new Date(year, month, day);
     }
 
+    private boolean createLoyaltyFromString(String loyalty) {
+        boolean temp = false;
+        switch(loyalty){
+            case "0":
+                temp = false;
+                break;
+            case "1":
+                temp = true;
+                break;
+        }
+        return temp;
+    }
+
 
     /**
      * createLocationFromInt() creates
@@ -43,21 +56,23 @@ public class TransactionManager {
      * @param campus int representative of location
      * @return Location object based on integer provided
      */
-    private Campus createLocationFromInt(int campus) {
+    private Campus createCampusFromString(String campus) {
         Campus place = null;
         switch (campus) {
-            case 0:
+            case "0":
                 place = Campus.NEW_BRUNSWICK;
                 break;
-            case 1:
+            case "1":
                 place = Campus.NEWARK;
                 break;
-            case 2:
+            case "2":
                 place = Campus.CAMDEN;
                 break;
         }
         return place;
     }
+
+
 
     public String typeCheckCharacterReturn(Account a){
         if(a.getClass() == Checking.class){
@@ -72,6 +87,48 @@ public class TransactionManager {
         else{
             return "(MM)";
         }
+    }
+
+    public static boolean isValidDouble(String input) {
+        if (input == null) {
+            return false;
+        }
+        try {
+            Double.parseDouble(input);
+            // If parsing succeeds, it's a valid double
+            return true;
+        } catch (NumberFormatException e) {
+            // Parsing failed, not a valid double
+            return false;
+        }
+    }
+
+
+    private Account createAccountFromStrings(String accountType, String fName, String lName, String date, double balance, String campus, String isLoyal, String withdraw) {
+        //Create Date object
+        Date dateObj = createDateFromString(date);
+
+        //Create Profile object
+        Profile holder = new Profile(fName, lName, dateObj);
+
+
+
+        if(accountType.equals("C")){
+            return new Checking(holder, balance);
+        }
+        else if(accountType.equals("CC")){
+            Campus camp = createCampusFromString(campus);
+            return new CollegeChecking(holder, balance, camp);
+        }
+        else if(accountType.equals("S")){
+            boolean loyalty = createLoyaltyFromString(isLoyal);
+            return new Savings(holder, balance, loyalty);
+        }
+        else {
+            return new MoneyMarket(holder, balance, true, 0);
+        }
+
+
     }
     /**
      * operationA() method: Helper method used to call the .open() method in AccountDatabase,
@@ -91,16 +148,25 @@ public class TransactionManager {
             return;
         }
 
-        if(!ad.open(a)){
-            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a)
-                    +" is already in the database");
-            return;
+        Account[] adList = ad.getAccounts();
+        if (adList != null) {
+            for (Account i : adList) {
+                if (i!= null) {
+                    if (i.equals(a)) {
+                        System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                                " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a)
+                                +" is already in the database");
+                        return;
+                    } else break;
+                }
+            }
         }
 
         ad.open(a);
+        System.out.println(System.identityHashCode(a));
         System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened");
+                " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened.");
+
     }
 
     /**
@@ -163,7 +229,7 @@ public class TransactionManager {
         System.out.println("Event Organizer running...\n");
         Scanner scanObj = new Scanner(System.in);
         boolean programRun = true;
-        AccountDatabase eventCalendar = new AccountDatabase();
+        AccountDatabase accountDatabase = new AccountDatabase();
         while (programRun) {
             String command = scanObj.nextLine();
             if (command.equals("")) continue;
@@ -172,24 +238,73 @@ public class TransactionManager {
             if (!isValidCommand(firstCMD)) {
                 System.out.println(firstCMD + " is an invalid command!");
             } else {
+                switch (firstCMD) {
+                    case "Q":
+                        programRun = false;
+                        System.out.println("Event Organizer terminated.");
+                        break;
+                    case "O":
+                        switch (inputList[1]) {
+                            case "C" -> {
+                                if(inputList.length == 6  && isValidDouble(inputList[5])) {
+                                    double bal = Double.parseDouble(inputList[5]);
+                                    if(bal > 0){
+                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
+                                                inputList[4], bal, "", "", "");
+                                        operationO(add, accountDatabase);
+                                    }
+                                    else{
+                                        System.out.println("Initial deposit cannot be 0 or negative.");
+                                    }
+                                }
+                                else{
+                                    System.out.println("Missing data for opening an account.");
+                                }
+                            }
+                            case "CC" -> {
+                                if(inputList.length == 7 && isValidDouble(inputList[5])) {
+                                    double bal = Double.parseDouble(inputList[5]);
+                                    if(bal > 0){
+                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
+                                                inputList[4], bal, inputList[6], "", "");
+                                        operationO(add, accountDatabase);
+                                    }
+                                    else{
+                                        System.out.println("Initial deposit cannot be 0 or negative.");
+                                    }
+                                }
+                                else{
+                                    System.out.println("Missing data for opening an account.");
+                                }
+                            }
+                            case "S" -> {
+                                double bal = Double.parseDouble(inputList[5]);
+                                if(inputList.length == 7 && isValidDouble(inputList[5])) {
+                                    if(bal > 0) {
+                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
+                                                inputList[4], bal, "", inputList[6], "");
+                                        operationO(add, accountDatabase);
+                                    }
+                                    else{
+                                        System.out.println("Initial deposit cannot be 0 or negative.");
+                                    }
+                                }
+                                else {
+                                    System.out.println("Missing data for opening an account.");
+                                }
 
-//                switch (firstCMD) {
-//                    case "Q":
-//                        programRun = false;
-//                        System.out.println("Event Organizer terminated.");
-//                        break;
-//                    case "A":
-//                        //inputList[i] (i=1 Date, i=2 TimeSlot, i=3 Location, i=4 Department, i=5 email, i=6 duration
-//                        Event aEvent = createEventObj(inputList[1], inputList[2], inputList[3], inputList[4], inputList[5], inputList[6]);
-//                        operationA(aEvent, eventCalendar);
-//                        break;
+                            }
+                        }
+                        break;
+
+
 //                    case "R":
 //                        ////inputList[i] (i=1 Date, i=2 TimeSlot, i=3 Location)
 //                        operationR(inputList[1], inputList[2], inputList[3], eventCalendar);
 //                        break;
-//                    case "P":
-//                        operationP(eventCalendar);
-//                        break;
+                    case "P":
+                        operationP(accountDatabase);
+                        break;
 //                    case "PC":
 //                        operationPC(eventCalendar);
 //                        break;
@@ -200,7 +315,7 @@ public class TransactionManager {
 //                        operationPE(eventCalendar);
 //                        break;
 //
-//                }
+                }
             }
         }
     }
