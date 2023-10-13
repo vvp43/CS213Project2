@@ -375,6 +375,7 @@ public class AccountDatabase2Test {
         System.out.println("reopen test");
         test.printtest();
 
+        //everything after this is unimportant
 //        test.open(john);
 //        test.open(john2);
 
