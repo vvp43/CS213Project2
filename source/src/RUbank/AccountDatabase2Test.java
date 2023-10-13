@@ -84,7 +84,6 @@ public class AccountDatabase2Test {
                 return true;
             }
             else {
-
                 return false;
             }
         }
@@ -106,8 +105,8 @@ public class AccountDatabase2Test {
                 accounts[numAcct-1] = null;
                 //printy();
             }
+            return true;
         }
-        return true;
     } //remove the given account
 
     public boolean withdraw(Account account) {

@@ -74,7 +74,11 @@ public class TransactionManager {
         }
     }
     /**
-     * operationA() method
+     * operationA() method: Helper method used to call the .open() method in AccountDatabase,
+     * used to check for any errors in input before opening an account
+     *
+     * @param a Account to be opened
+     * @param ad , short for Account Database
      */
     private void operationO(Account a, AccountDatabase2Test ad) {
         //Check if any elements of event is invalid and display error message
@@ -100,50 +104,55 @@ public class TransactionManager {
     }
 
     /**
-     * operationR() method
+     * operationR() method: Helper method used to call the .close() method in AccountDatabase,
+     * used to check for any errors in input before opening an account
+     *
+     * @param a Account to be opened
+     * @param ad , short for Account Database
      */
-//    private void operationR(String date, String campus, AccountDatabase2Test ac) {
-//        //Create Date object
-//        Date dateObj = createDateFromString(date);
-//        //Check if any elements of event is invalid and display error message
-//        if (!dateObj.isValid()) {
-//            return;
-//        }
-//
-//        //Create campus object
-//        Campus room = createLocationFromInt(Integer.parseInt(campus));
-//
-//        //Create Event object
-//        Event e = new Event(dateObj, startTime, room);
-//
-//        //Check if Event object is in the event calendar to remove or not
-//        if (ec.contains(e)) {
-//            ec.remove(e);
-//            System.out.println("Event has been removed from the calendar!");
-//        } else {
-//            System.out.println("Cannot remove; event is not in the calendar! ");
-//        }
-//    }
+    private void operationC(Account a, AccountDatabase2Test ad) {
+        //Create Date object
+        //Check if any elements of event is invalid and display error message
+        if (!a.holder.getDob().isValid()) {
+            return;
+        }
+        if(!ad.close(a)){
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is not in the" +
+                    "database");
+        }
+        ad.close(a);
+    }
 
     /**
-     * operationP() method
+     * operationP() method: Helper method used to call printSorted which prints all accounts sorted
+     * by Account Type and Profile
+     *
+     * @param ad ,short for Account Database
      */
     private void operationP(AccountDatabase2Test ad) {
         ad.printSorted();
     }
 
     /**
-     * operationPE() method
+     * operationPE() method: Helper method used to call printFeesAndInterests which prints
+     * all accounts with their respective monthly interest and fees;
+     *
+     * @param ad ,short for Account Database
      */
-    private void operationPI(AccountDatabase2Test ec) {
-        ec.printFeesAndInterests();
+    private void operationPI(AccountDatabase2Test ad) {
+        ad.printFeesAndInterests();
     }
 
     /**
-     * operationPC() method
+     * operationPC() method: Helper method used to call printUpdatedBalances which updates and
+     * applies all monthly fees and interest to accounts in database, then prints them sorted
+     * by type of account and profile.
+     *
+     * @param ad ,short for Account Database
      */
-    private void operationUB(AccountDatabase2Test ec) {
-        ec.printUpdatedBalances();
+    private void operationUB(AccountDatabase2Test ad) {
+        ad.printUpdatedBalances();
     }
 //
 //
