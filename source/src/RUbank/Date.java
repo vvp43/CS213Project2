@@ -168,19 +168,27 @@ public class Date implements Comparable<Date> {
     }
 
     private boolean currentDay(Date inputDate) {
-        int currentYear = inputDate.curr.get(Calendar.YEAR);
-        int currentMonth = inputDate.curr.get(Calendar.MONTH) + 1;
-        int currentDay = inputDate.curr.get(Calendar.DAY_OF_MONTH);
-        Date currentDate = new Date(currentYear, currentMonth, currentDay);
+        int currentYear = curr.get(Calendar.YEAR);
+        int currentMonth = curr.get(Calendar.MONTH) + 1;
+        int currentDay = curr.get(Calendar.DAY_OF_MONTH);
 
-        return !inputDate.equals(currentDate);
+        //System.out.println(currentYear+" "+currentMonth+" "+currentDay);
+        //System.out.println(inputDate.getYear()+" "+inputDate.getMonth()+" "+inputDate.getDay());
+        if(inputDate.getYear() == currentYear && inputDate.getMonth() == currentMonth &&
+            inputDate.getDay() == currentDay){
+            return true;
+        }
+        return false;
     }
 
-    private boolean under16(Date inputDate) {
-        if(isFutureDate(inputDate)) {
-            Calendar temp = Calendar.getInstance();
-            temp.add(Calendar.YEAR, -16);
-            return !inputDate.event.before(temp) && !inputDate.event.equals(temp);
+    private boolean isUnder16(Date inputDate) {
+        int currentYear = curr.get(Calendar.YEAR)-16;
+        int currentMonth = curr.get(Calendar.MONTH) + 1;
+        int currentDay = curr.get(Calendar.DAY_OF_MONTH);
+
+        if(inputDate.getYear() <= currentYear && inputDate.getMonth() <= currentMonth &&
+                inputDate.getDay() <= currentDay){
+            return true;
         }
         return false;
     }
@@ -196,18 +204,20 @@ public class Date implements Comparable<Date> {
         int m = this.month;
         int d = this.day;
         Date thisEvent = new Date(y, m, d);
-        //1st step: checks if dob is current day
-        if (currentDay(thisEvent) && isFutureDate(thisEvent)) {
-            //2nd step: checks if dob is atleast 16
-            if (under16(thisEvent)) {
-                return true;
+        if(isValidDate(thisEvent)) {
+            if (!currentDay(thisEvent) && !isFutureDate(thisEvent)) {
+                if (isUnder16(thisEvent)) {
+                    return true;
+                } else {
+                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": under 16!");
+                }
+
             } else {
-                System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": under 16!");
-                return false;
+                System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": cannot be today or a future day.");
             }
         }
-        else {
-            System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": cannot be today or a future day.");
+        else{
+            System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": not a valid calendar date!");
         }
         return false;
     }
@@ -235,22 +245,17 @@ public class Date implements Comparable<Date> {
         /**
          * Test cases
          */
-        Date a = new Date(2023, 2, 29);
-        Date b = new Date(2023, 2, 29);
-        Date c = new Date(2022, 2, 29);
-        Date d = new Date(2025, 3, 31);
-
-        int currentYear = 2007;
-        int currentMonth = 8;
-        int currentDay = 12;
-        Date currentDate = new Date(currentYear, currentMonth, currentDay);
-        System.out.println(currentDate.isValid());
+        Date a = new Date(2023, 5, 12);
+        Date b = new Date(2023, 11, 12);
+        Date c = new Date(2023, 10, 12);
+        Date d = new Date(20057, 11, 32);
+        Date e = new Date(2007, 10, 12);
 
 
-        //isValid() complete method
-        System.out.println(a.isValid());
-        System.out.println(b.isValid());
-        System.out.println(c.isValid());
-        System.out.println(d.isValid());
+        System.out.println("Too young Case: "+a.isValid());
+        System.out.println("Future case: "+b.isValid());
+        System.out.println("Today case:" +c.isValid());
+        System.out.println("Invalid Date case:" +d.isValid());
+        System.out.println("Over 16 case:" +e.isValid());
     }
 }

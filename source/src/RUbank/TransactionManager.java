@@ -59,6 +59,20 @@ public class TransactionManager {
         return place;
     }
 
+    public String typeCheckCharacterReturn(Account a){
+        if(a.getClass() == Checking.class){
+            return "(C)";
+        }
+        else if(a.getClass() == CollegeChecking.class){
+            return "(CC)";
+        }
+        else if(a.getClass() == Savings.class){
+            return "(S)";
+        }
+        else{
+            return "(MM)";
+        }
+    }
     /**
      * operationA() method
      */
@@ -73,17 +87,22 @@ public class TransactionManager {
             return;
         }
 
-
-
+        if(!ad.open(a)){
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a)
+                    +" is already in the database");
+            return;
+        }
 
         ad.open(a);
-
+        System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened");
     }
 
     /**
      * operationR() method
      */
-//    private void operationR(String date, String location, AccountDatabase2Test ac) {
+//    private void operationR(String date, String campus, AccountDatabase2Test ac) {
 //        //Create Date object
 //        Date dateObj = createDateFromString(date);
 //        //Check if any elements of event is invalid and display error message
@@ -91,11 +110,8 @@ public class TransactionManager {
 //            return;
 //        }
 //
-//        //Create Timeslot object
-//        Timeslot startTime = createTimeSlotFromString(timeSlot);
-//
-//        //Create Location object
-//        Location room = createLocationFromString(location);
+//        //Create campus object
+//        Campus room = createLocationFromInt(Integer.parseInt(campus));
 //
 //        //Create Event object
 //        Event e = new Event(dateObj, startTime, room);
@@ -108,27 +124,27 @@ public class TransactionManager {
 //            System.out.println("Cannot remove; event is not in the calendar! ");
 //        }
 //    }
-//
-//    /**
-//     * operationP() method
-//     */
-//    private void operationP(AccountDatabase2Test ad) {
-//        ad.printSorted();
-//    }
-//
-//    /**
-//     * operationPE() method
-//     */
-//    private void operationPI(AccountDatabase2Test ec) {
-//        ec.printFeesAndInterests();
-//    }
-//
-//    /**
-//     * operationPC() method
-//     */
-//    private void operationUB(AccountDatabase2Test ec) {
-//        ec.printUpdatedBalances();
-//    }
+
+    /**
+     * operationP() method
+     */
+    private void operationP(AccountDatabase2Test ad) {
+        ad.printSorted();
+    }
+
+    /**
+     * operationPE() method
+     */
+    private void operationPI(AccountDatabase2Test ec) {
+        ec.printFeesAndInterests();
+    }
+
+    /**
+     * operationPC() method
+     */
+    private void operationUB(AccountDatabase2Test ec) {
+        ec.printUpdatedBalances();
+    }
 //
 //
 //    /**

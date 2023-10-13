@@ -84,10 +84,12 @@ public class AccountDatabase2Test {
                 return true;
             }
             else {
+
                 return false;
             }
         }
     } //add a new account
+
 
     public boolean close(Account account) {
         if (!contains(account)) {
