@@ -37,7 +37,7 @@ public class AccountDatabase {
         numAcct = newNumofEvents;
     } //increase the capacity by 4
 
-    private boolean isEmpty() {
+    public boolean isEmpty() {
         boolean check = true;
 
         if (accounts == null) {

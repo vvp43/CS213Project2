@@ -192,15 +192,12 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
-    private boolean isUnder16(Date inputDate) {
-        int currentYear = curr.get(Calendar.YEAR)-16;
+    private boolean isUnder16(Date input) {
+        int currentYear = curr.get(Calendar.YEAR);
         int currentMonth = curr.get(Calendar.MONTH) + 1;
         int currentDay = curr.get(Calendar.DAY_OF_MONTH);
-        if(inputDate.getYear() <= currentYear && inputDate.getMonth() <= currentMonth &&
-                inputDate.getDay() <= currentDay){
-            return true;
-        }
-        return false;
+
+        return currentYear - input.getYear() >= 16;
     }
 
     /**
@@ -259,7 +256,8 @@ public class Date implements Comparable<Date> {
         Date b = new Date(2023, 11, 12);
         Date c = new Date(2023, 10, 12);
         Date d = new Date(20057, 11, 32);
-        Date e = new Date(2007, 10, 12);
+        Date e = new Date(2007, 10, 13);
+        Date f = new Date(1987, 1, 15);
 
 
         System.out.println("Too young Case: "+a.isValid());
@@ -267,5 +265,6 @@ public class Date implements Comparable<Date> {
         System.out.println("Today case:" +c.isValid());
         System.out.println("Invalid Date case:" +d.isValid());
         System.out.println("Over 16 case:" +e.isValid());
+        System.out.println("Over 16 case? should be true:" +f.isValid());
     }
 }

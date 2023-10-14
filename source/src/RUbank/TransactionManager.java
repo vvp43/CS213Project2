@@ -143,7 +143,7 @@ public class TransactionManager {
             System.out.println("Minimum of $2000 to open a Money Market account.");
             return;
         }
-        
+        System.out.println(a.holder.getDob().toString());
         if(!a.holder.getDob().isValid()){
             return;
         }
@@ -187,7 +187,12 @@ public class TransactionManager {
      * @param ad ,short for Account Database
      */
     private void operationP(AccountDatabase ad) {
-        ad.printSorted();
+        if(!ad.isEmpty()) {
+            ad.printSorted();
+        }
+        else{
+            System.out.println("Account Database is empty!");
+        }
     }
 
     /**
@@ -197,7 +202,12 @@ public class TransactionManager {
      * @param ad ,short for Account Database
      */
     private void operationPI(AccountDatabase ad) {
-        ad.printFeesAndInterests();
+        if(!ad.isEmpty()) {
+            ad.printFeesAndInterests();
+        }
+        else{
+            System.out.println("Account Database is empty!");
+        }
     }
 
     /**
@@ -208,7 +218,12 @@ public class TransactionManager {
      * @param ad ,short for Account Database
      */
     private void operationUB(AccountDatabase ad) {
-        ad.printUpdatedBalances();
+        if(!ad.isEmpty()){
+            ad.printUpdatedBalances();
+        }
+        else{
+            System.out.println("Account Database is empty!");
+        }
     }
 
 
@@ -295,16 +310,12 @@ public class TransactionManager {
                     case "P":
                         operationP(accountDatabase);
                         break;
-//                    case "PC":
-//                        operationPC(eventCalendar);
-//                        break;
-//                    case "PD":
-//                        operationPD(eventCalendar);
-//                        break;
-//                    case "PE":
-//                        operationPE(eventCalendar);
-//                        break;
-//
+                    case "PI":
+                        operationPI(accountDatabase);
+                        break;
+                    case "PD":
+                        operationUB(accountDatabase);
+                        break;
                 }
             }
         }
