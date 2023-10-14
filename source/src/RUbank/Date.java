@@ -200,6 +200,14 @@ public class Date implements Comparable<Date> {
         return currentYear - input.getYear() >= 16;
     }
 
+    public boolean isUnder24() {
+        int currentYear = curr.get(Calendar.YEAR);
+        int currentMonth = curr.get(Calendar.MONTH) + 1;
+        int currentDay = curr.get(Calendar.DAY_OF_MONTH);
+
+        return currentYear - this.year < 24;
+    }
+
     /**
      * isValid() method
      * Checks if an event is valid meaning within 6 months, cannot be in the future, and is an actual date possible.

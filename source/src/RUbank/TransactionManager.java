@@ -143,8 +143,12 @@ public class TransactionManager {
             System.out.println("Minimum of $2000 to open a Money Market account.");
             return;
         }
-        System.out.println(a.holder.getDob().toString());
+        //System.out.println(a.holder.getDob().toString());
         if(!a.holder.getDob().isValid()){
+            return;
+        }
+        if(a.getClass() == CollegeChecking.class && !a.holder.getDob().isUnder24()){
+            System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24");
             return;
         }
 
@@ -175,9 +179,13 @@ public class TransactionManager {
         if(!ad.close(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
                     " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is not in the" +
-                    "database");
+                    "database.");
         }
         ad.close(a);
+    }
+
+    private void operationW(Account a, AccountDatabase ad) {
+        
     }
 
     /**
@@ -302,11 +310,12 @@ public class TransactionManager {
                         }
                         break;
 
-
 //                    case "R":
 //                        ////inputList[i] (i=1 Date, i=2 TimeSlot, i=3 Location)
 //                        operationR(inputList[1], inputList[2], inputList[3], eventCalendar);
 //                        break;
+                    case "W":
+
                     case "P":
                         operationP(accountDatabase);
                         break;
