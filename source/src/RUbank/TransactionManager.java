@@ -143,12 +143,18 @@ public class TransactionManager {
             System.out.println("Minimum of $2000 to open a Money Market account.");
             return;
         }
+        
+        if(!a.holder.getDob().isValid()){
+            return;
+        }
 
         if(!ad.open(a)){
-            System.out.println("Not added");
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
         }
         else{
-            System.out.println("yipee");
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened");
             ad.open(a);
         }
     }
