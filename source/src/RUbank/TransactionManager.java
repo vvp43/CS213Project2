@@ -109,7 +109,6 @@ public class TransactionManager {
     private Account createAccountFromStrings(String accountType, String fName, String lName, String date, double balance, String campus, String isLoyal, String withdraw) {
         //Create Date object
         Date dateObj = createDateFromString(date);
-        if (!dateObj.isValid()) {
             Profile holder = new Profile(fName, lName, dateObj);
             if (accountType.equals("C")) {
                 return new Checking(holder, balance);
@@ -122,8 +121,6 @@ public class TransactionManager {
             } else {
                 return new MoneyMarket(holder, balance, true, 0);
             }
-        }
-        return null;
         //Create Profile object
     }
 
@@ -147,25 +144,13 @@ public class TransactionManager {
             return;
         }
 
-        Account[] adList = ad.getAccounts();
-        if (adList != null) {
-            for (Account i : adList) {
-                if (i!= null) {
-                    if (i.equals(a)) {
-                        System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                                " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a)
-                                +" is already in the database");
-                        return;
-                    } else break;
-                }
-            }
+        if(!ad.open(a)){
+            System.out.println("Not added");
         }
-
-        ad.open(a);
-        System.out.println(System.identityHashCode(a));
-        System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened.");
-
+        else{
+            System.out.println("yipee");
+            ad.open(a);
+        }
     }
 
     /**
@@ -244,22 +229,6 @@ public class TransactionManager {
                         break;
                     case "O":
                         switch (inputList[1]) {
-                            case "C" -> {
-                                if(inputList.length == 6  && isValidDouble(inputList[5])) {
-                                    double bal = Double.parseDouble(inputList[5]);
-                                    if(bal > 0){
-                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
-                                                inputList[4], bal, "", "", "");
-                                        operationO(add, accountDatabase);
-                                    }
-                                    else{
-                                        System.out.println("Initial deposit cannot be 0 or negative.");
-                                    }
-                                }
-                                else{
-                                    System.out.println("Missing data for opening an account.");
-                                }
-                            }
                             case "CC" -> {
                                 if(inputList.length == 7 && isValidDouble(inputList[5])) {
                                     double bal = Double.parseDouble(inputList[5]);
@@ -292,6 +261,22 @@ public class TransactionManager {
                                     System.out.println("Missing data for opening an account.");
                                 }
 
+                            }
+                            default ->{
+                                if(inputList.length == 6  && isValidDouble(inputList[5])) {
+                                    double bal = Double.parseDouble(inputList[5]);
+                                    if(bal > 0){
+                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
+                                                inputList[4], bal, "", "", "");
+                                        operationO(add, accountDatabase);
+                                    }
+                                    else{
+                                        System.out.println("Initial deposit cannot be 0 or negative.");
+                                    }
+                                }
+                                else{
+                                    System.out.println("Missing data for opening an account.");
+                                }
                             }
                         }
                         break;

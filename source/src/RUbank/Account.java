@@ -29,7 +29,9 @@ public abstract class Account implements Comparable<Account>{
     }
     public boolean equals(Object account){
         Account a = (Account) account;
-        //System.out.println("CHECKING SHIT IN HERE");
+//        System.out.println("first cmp: "+holder.getFname()+" "+holder.getLname()+" Date: "+holder.getDob().toString());
+//        System.out.println("second  cmp: "+a.holder.getFname()+" "+a.holder.getLname()+" Date: "+a.holder.getDob().toString());
+
         return holder.getFname().equalsIgnoreCase(a.holder.getFname()) &&
                 holder.getLname().equalsIgnoreCase(a.holder.getLname()) &&
                 holder.getDob().equals(a.holder.getDob());

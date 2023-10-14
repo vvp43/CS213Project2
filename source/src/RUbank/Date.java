@@ -64,6 +64,17 @@ public class Date implements Comparable<Date> {
     public String toString(){
         return month+"/"+day+"/"+year;
     }
+
+    @Override
+    public boolean equals(Object input){
+        Date a = (Date) input;
+        int inputDateInt = a.year * 10000 + a.month * 100 + a.day;
+        int currentDateInt = this.year * 10000 + this.month * 100 + this.day;
+        int diff = currentDateInt - inputDateInt;
+        return diff == 0;
+
+
+    }
     @Override
     public int compareTo(Date input) {
         int inputDateInt = input.year * 10000 + input.month * 100 + input.day;
