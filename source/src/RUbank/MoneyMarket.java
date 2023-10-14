@@ -25,6 +25,14 @@ public class MoneyMarket extends Savings{
         withdrawal++;
         return temp;
     }
+
+    public void setWithdrawal(int input) {
+        withdrawal = input;
+    }
+    public int getWithdrawal() {
+        return withdrawal;
+    }
+
     @Override
     public double monthlyInterest() {
         if(isLoyal){
@@ -64,7 +72,7 @@ public class MoneyMarket extends Savings{
     public boolean equals(Object mmAccount){
         MoneyMarket m = (MoneyMarket) mmAccount;
         //System.out.println("CHECKING SHIZ IN HERE");
-        return super.equals(m) && (withdrawal == m.withdrawal);
+        return super.equals(m);
     }
 
 }

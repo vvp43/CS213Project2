@@ -28,7 +28,9 @@ public class CollegeChecking extends Checking {
         return this.campus;
     }
 
-
+    public void setCampus (Campus a) {
+        campus = a;
+    }
     @Override
     public double monthlyFee() {
         return 0;

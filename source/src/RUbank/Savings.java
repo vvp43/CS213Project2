@@ -28,7 +28,12 @@ public class Savings extends Account{
             isLoyal = true;
         }
     }
-
+    public void setIsLoyal(boolean loyalty){
+        isLoyal = loyalty;
+    }
+    public boolean getIsLoyal(){
+        return isLoyal;
+    }
     @Override
     public double monthlyInterest() {
         DecimalFormat df = new DecimalFormat("#0.00");

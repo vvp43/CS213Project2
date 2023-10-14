@@ -119,7 +119,7 @@ public class AccountDatabase {
             if (account.getClass() == Checking.class ||
                     account.getClass() == CollegeChecking.class) { // withdraw from checking/college
                 if ((accounts[find(account)].balance >= account.balance)) {
-                    System.out.println("WITHDRAWING...");
+                    //System.out.println("WITHDRAWING...");
                     accounts[find(account)].balance -= account.balance;
                     return true;
                 }
@@ -127,7 +127,7 @@ public class AccountDatabase {
             else if(account.getClass() == Savings.class){ // withdraw from savings
                 if ((accounts[find(account)].balance >= account.balance)) {
                     Savings temp = (Savings) accounts[find(account)];
-                    System.out.println("WITHDRAWING...");
+                    //System.out.println("WITHDRAWING...");
                     temp.balance -= account.balance;
                     temp.updateStatus();
                     return true;

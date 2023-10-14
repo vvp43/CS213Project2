@@ -151,7 +151,24 @@ public class TransactionManager {
             System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24");
             return;
         }
-
+        Account[] list = ad.getAccounts();
+        if(list!=null) {
+            if (a.getClass() == CollegeChecking.class || a.getClass() == Checking.class) {
+                for (Account acc : list) {
+                    if (acc != null) {
+                        if (acc.holder.equals(a.holder) && acc.getClass() == Checking.class) {
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                            return;
+                        } else if (acc.holder.equals(a.holder) && acc.getClass() == CollegeChecking.class) {
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
         if(!ad.open(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
                     " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
@@ -160,6 +177,40 @@ public class TransactionManager {
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
                     " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened");
             ad.open(a);
+        }
+    }
+
+    private void updateAccountForOperations(Account a, AccountDatabase ad){
+        Account[] list = ad.getAccounts();
+        if(list != null) {
+            if (a.getClass() == CollegeChecking.class) {
+                for (Account acc : list) {
+                    if (acc != null) {
+                        if (acc.getClass() == CollegeChecking.class && acc.holder.equals(a.holder)) {
+                            ((CollegeChecking) a).setCampus(((CollegeChecking) acc).getCampus());
+                        }
+                    }
+                }
+            }
+            else if(a.getClass() == Savings.class){
+                for (Account acc : list) {
+                    if (acc != null) {
+                        if (acc.getClass() == Savings.class && acc.holder.equals(a.holder)) {
+                            ((Savings) a).setIsLoyal(((Savings) acc).getIsLoyal());
+                        }
+                    }
+                }
+            }
+            else if(a.getClass() == MoneyMarket.class){
+                for (Account acc : list) {
+                    if (acc != null) {
+                        if (acc.getClass() == MoneyMarket.class && acc.holder.equals(a.holder)) {
+                            ((MoneyMarket) a).setIsLoyal(((MoneyMarket) acc).getIsLoyal());
+                            ((MoneyMarket) a).setWithdrawal(((MoneyMarket) acc).getWithdrawal());
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -176,16 +227,53 @@ public class TransactionManager {
         if (!a.holder.getDob().isValid()) {
             return;
         }
+
+        updateAccountForOperations(a, ad);
         if(!ad.close(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is not in the" +
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is not in the " +
                     "database.");
         }
-        ad.close(a);
+        else{
+            ad.close(a);
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" has been closed.");
+        }
+
     }
 
     private void operationW(Account a, AccountDatabase ad) {
-        
+        updateAccountForOperations(a, ad);
+        if(a.balance < 0){
+            System.out.println("Withdraw - amount cannot be 0 or negative.");
+            return;
+        }
+
+        Account[] list = ad.getAccounts();
+        if(list != null) {
+            for (Account acc : list) {
+                if (acc != null) {
+                    if(acc.getClass() == a.getClass()){
+                        if(acc.equals(a) && a.balance > acc.balance){
+                            System.out.println("Withdraw - insufficient fund.");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        if(!ad.withdraw(a)){
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw -" +
+                    "is not in the database.");
+        }
+        else{
+            ad.withdraw(a);
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw -" +
+                    " balance updated.");
+        }
     }
 
     /**
@@ -310,12 +398,23 @@ public class TransactionManager {
                         }
                         break;
 
-//                    case "R":
-//                        ////inputList[i] (i=1 Date, i=2 TimeSlot, i=3 Location)
-//                        operationR(inputList[1], inputList[2], inputList[3], eventCalendar);
-//                        break;
+                    case "C":
+                        ////inputList[i] (i=1 Date, i=2 TimeSlot, i=3 Location)
+                        Account remove = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], 0,
+                                "", "", "");
+                        operationC(remove, accountDatabase);
+                        break;
                     case "W":
-
+                        if(isValidDouble(inputList[5])){
+                            double with = Double.parseDouble(inputList[5]);
+                            Account withdrawal = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], with,
+                                        "", "", "");
+                            operationW(withdrawal, accountDatabase);
+                        }
+                        else{
+                            System.out.println("Not a valid amount");
+                        }
+                        break;
                     case "P":
                         operationP(accountDatabase);
                         break;

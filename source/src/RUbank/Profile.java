@@ -31,6 +31,11 @@ public class Profile implements Comparable<Profile>{
     }
 
     @Override
+    public boolean equals(Object input){
+        Profile cast = (Profile) input;
+        return fname.equals(cast.fname) && lname.equals(cast.lname) && dob.equals(cast.dob);
+    }
+    @Override
     public int compareTo(Profile o) {
         return 0;
     }
