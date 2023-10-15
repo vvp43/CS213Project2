@@ -202,9 +202,9 @@ public class Date implements Comparable<Date> {
         temptemp.set(currentYear, currentMonth, currentDay);
 
         cmp.add(Calendar.YEAR, -16);
-        System.out.println(cmp.get(Calendar.YEAR));
-        System.out.println(cmp.get(Calendar.MONTH));
-        System.out.println(cmp.get(Calendar.DAY_OF_MONTH));
+//        System.out.println(cmp.get(Calendar.YEAR));
+//        System.out.println(cmp.get(Calendar.MONTH));
+//        System.out.println(cmp.get(Calendar.DAY_OF_MONTH));
 
 
         if(temptemp.after(cmp)){
@@ -226,9 +226,9 @@ public class Date implements Comparable<Date> {
         temptemp.set(currentYear, currentMonth, currentDay);
 
         cmp.add(Calendar.YEAR, -24);
-        System.out.println(cmp.get(Calendar.YEAR));
-        System.out.println(temptemp.get(Calendar.MONTH));
-        System.out.println(temptemp.get(Calendar.DAY_OF_MONTH));
+//        System.out.println(cmp.get(Calendar.YEAR));
+//        System.out.println(temptemp.get(Calendar.MONTH));
+//        System.out.println(temptemp.get(Calendar.DAY_OF_MONTH));
 
 
         if(temptemp.after(cmp)){

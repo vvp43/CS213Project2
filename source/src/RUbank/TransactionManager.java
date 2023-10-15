@@ -60,21 +60,24 @@ public class TransactionManager {
      */
     private Campus createCampusFromString(String campus) {
         Campus place = null;
-        switch (campus) {
-            case "0":
-                place = Campus.NEW_BRUNSWICK;
-                break;
-            case "1":
-                place = Campus.NEWARK;
-                break;
-            case "2":
-                place = Campus.CAMDEN;
-                break;
+        if(isStringInteger(campus)){
+            switch (campus) {
+                case "0" -> place = Campus.NEW_BRUNSWICK;
+                case "1" -> place = Campus.NEWARK;
+                case "2" -> place = Campus.CAMDEN;
+            }
         }
         return place;
     }
 
-
+    public boolean isStringInteger(String input) {
+        try {
+            int a = Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 
     public String typeCheckCharacterReturn(Account a){
         if(a.getClass() == Checking.class){
@@ -97,10 +100,8 @@ public class TransactionManager {
         }
         try {
             Double.parseDouble(input);
-            // If parsing succeeds, it's a valid double
             return true;
         } catch (NumberFormatException e) {
-            // Parsing failed, not a valid double
             return false;
         }
     }
@@ -168,11 +169,11 @@ public class TransactionManager {
             return;
         }
         if(a.getClass() == CollegeChecking.class && !a.holder.getDob().isUnder24()){
-            System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24");
+            System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24.");
             return;
         }
-        if(a.getClass() == CollegeChecking.class && (((CollegeChecking) a).getCampus() != Campus.NEW_BRUNSWICK ||((CollegeChecking) a).getCampus() != Campus.CAMDEN || ((CollegeChecking) a).getCampus() != Campus.NEWARK)){
-            System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24");
+        if(a.getClass() == CollegeChecking.class && ((CollegeChecking) a).getCampus() == null){
+            System.out.println("Invalid campus code.");
             return;
         }
         if(checkIfCandCCExist(a, ad)){
