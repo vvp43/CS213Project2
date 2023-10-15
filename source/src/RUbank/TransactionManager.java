@@ -227,7 +227,6 @@ public class TransactionManager {
         if (!a.holder.getDob().isValid()) {
             return;
         }
-
         updateAccountForOperations(a, ad);
         if(!ad.close(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
@@ -239,22 +238,45 @@ public class TransactionManager {
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
                     " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" has been closed.");
         }
-
     }
 
+    private void operationD(Account a, AccountDatabase ad) {
+        updateAccountForOperations(a, ad);
+        if(a.balance < 0){
+            System.out.println("Deposit - amount cannot be 0 or negative.");
+            return;
+        }
+        if(!ad.contains(a)){
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Deposit - " +
+                    "is not in the database.");
+        }
+        else{
+            ad.deposit(a);
+            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Deposit -" +
+                    " balance updated.");
+        }
+    }
+
+    /**
+     * operationW() method: Helper method used to perform the withdrawal operation, and also responsible
+     * for catching exceptions where balance < 0 and checking if withdrawal amount > balance.
+     * @param a Account that is copied from the terminal
+     * @param ad
+     */
     private void operationW(Account a, AccountDatabase ad) {
         updateAccountForOperations(a, ad);
         if(a.balance < 0){
             System.out.println("Withdraw - amount cannot be 0 or negative.");
             return;
         }
-
         Account[] list = ad.getAccounts();
         if(list != null) {
             for (Account acc : list) {
                 if (acc != null) {
                     if(acc.getClass() == a.getClass()){
-                        if(acc.equals(a) && a.balance > acc.balance){
+                        if(acc.equals(a) && (a.balance > acc.balance)){
                             System.out.println("Withdraw - insufficient fund.");
                             return;
                         }
@@ -262,10 +284,22 @@ public class TransactionManager {
                 }
             }
         }
-
-        if(!ad.withdraw(a)){
+        if(list != null) {
+            for (Account acc : list) {
+                if (acc != null) {
+                    if(acc.getClass() == a.getClass()){
+                        //System.out.println(acc.balance-(a.balance+10));
+                        if(acc.equals(a) && ((acc.balance - (a.balance+10) < 0))){
+                            System.out.println("Withdraw - insufficient fund.");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        if(!ad.contains(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw -" +
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw - " +
                     "is not in the database.");
         }
         else{
@@ -322,9 +356,128 @@ public class TransactionManager {
         }
     }
 
-
     /**
-     * run() method
+     * chooseAccount() method: Based on the given list of strings, choose the correct corresponding
+     * account to open and parse inputs into an object to use open an account entered through the
+     * terminal. Also responsible for throwing exceptions related to missing data in the string provided
+     * like an invalid double etc.
+     *
+     * @param inputList list of strings where each element represents one part of the parsed command
+     * @param accountDatabase AccountDatabase object used to perform various actions
+     */
+    private void chooseAccount (String inputList[], AccountDatabase accountDatabase){
+        switch (inputList[1]) {
+            case "CC" -> {
+                if(inputList.length == 7 && isValidDouble(inputList[5])) {
+                    double bal = Double.parseDouble(inputList[5]);
+                    if(bal > 0){
+                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], bal, inputList[6], "", "");
+                        operationO(add, accountDatabase);
+                    } else {
+                        System.out.println("Initial deposit cannot be 0 or negative.");
+                    }
+                } else {
+                    System.out.println("Missing data for opening an account.");
+                }
+            } case "S" -> {
+                double bal = Double.parseDouble(inputList[5]);
+                if(inputList.length == 7 && isValidDouble(inputList[5])) {
+                    if(bal > 0) {
+                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], bal, "", inputList[6], "");
+                        operationO(add, accountDatabase);
+                    } else {
+                        System.out.println("Initial deposit cannot be 0 or negative.");
+                    }
+                } else {
+                    System.out.println("Missing data for opening an account.");
+                }
+            } default ->{
+                if(inputList.length == 6  && isValidDouble(inputList[5])) {
+                    double bal = Double.parseDouble(inputList[5]);
+                    if(bal > 0){
+                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], bal, "", "", "");
+                        operationO(add, accountDatabase);
+                    } else{
+                        System.out.println("Initial deposit cannot be 0 or negative.");
+                    }
+                } else{
+                    System.out.println("Missing data for opening an account.");
+                }
+            }
+        }
+    }
+
+    private void withdrawalCheckandRun(String[] inputList, AccountDatabase accountDatabase){
+        if(inputList.length == 6 ){
+            if(isValidDouble(inputList[5])) {
+                double with = Double.parseDouble(inputList[5]);
+                Account withdrawal = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], with,
+                        "", "", "");
+                operationW(withdrawal, accountDatabase);
+            } else{
+                System.out.println("Not a valid amount");
+            }
+        } else{
+            System.out.println("Missing data for depositing into an account.");
+        }
+    }
+
+    private void closeCheckAndRun(String[] inputList, AccountDatabase accountDatabase){
+        if(inputList.length == 5 ) {
+            Account remove = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], 0,
+                    "", "", "");
+            operationC(remove, accountDatabase);
+        } else{
+            System.out.println("Missing data closing an account.");
+        }
+    }
+
+    private void depositCheckAndRun(String[] inputList, AccountDatabase accountDatabase){
+        if(inputList.length == 6 ){
+            if(isValidDouble(inputList[5])) {
+                double with = Double.parseDouble(inputList[5]);
+                Account deposit = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], with,
+                        "", "", "");
+                operationD(deposit, accountDatabase);
+            } else{
+                System.out.println("Not a valid amount");
+            }
+        } else{
+            System.out.println("Missing data depositing into an account.");
+        }
+    }
+    private boolean switchHelper(String firstCMD, String[] inputList, AccountDatabase accountDatabase){
+        switch (firstCMD) {
+            case "Q":
+                System.out.println("Event Organizer terminated.");
+                return false;
+            case "O":
+                chooseAccount(inputList, accountDatabase);
+                break;
+            case "C":
+                closeCheckAndRun(inputList, accountDatabase);
+                break;
+            case "D":
+                depositCheckAndRun(inputList, accountDatabase);
+                break;
+            case "W":
+                withdrawalCheckandRun(inputList, accountDatabase);
+                break;
+            case "P":
+                operationP(accountDatabase);
+                break;
+            case "PI":
+                operationPI(accountDatabase);
+                break;
+            case "PD":
+                operationUB(accountDatabase);
+                break;
+        }
+        return true;
+    }
+    /**
+     * run() method: Driver used to handle parsing inputs from command line into the actual program
+     * and performing the various tasks that are available to the user.
      */
     public void run() {
         System.out.println("Event Organizer running...\n");
@@ -339,92 +492,7 @@ public class TransactionManager {
             if (!isValidCommand(firstCMD)) {
                 System.out.println(firstCMD + " is an invalid command!");
             } else {
-                switch (firstCMD) {
-                    case "Q":
-                        programRun = false;
-                        System.out.println("Event Organizer terminated.");
-                        break;
-                    case "O":
-                        switch (inputList[1]) {
-                            case "CC" -> {
-                                if(inputList.length == 7 && isValidDouble(inputList[5])) {
-                                    double bal = Double.parseDouble(inputList[5]);
-                                    if(bal > 0){
-                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
-                                                inputList[4], bal, inputList[6], "", "");
-                                        operationO(add, accountDatabase);
-                                    }
-                                    else{
-                                        System.out.println("Initial deposit cannot be 0 or negative.");
-                                    }
-                                }
-                                else{
-                                    System.out.println("Missing data for opening an account.");
-                                }
-                            }
-                            case "S" -> {
-                                double bal = Double.parseDouble(inputList[5]);
-                                if(inputList.length == 7 && isValidDouble(inputList[5])) {
-                                    if(bal > 0) {
-                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
-                                                inputList[4], bal, "", inputList[6], "");
-                                        operationO(add, accountDatabase);
-                                    }
-                                    else{
-                                        System.out.println("Initial deposit cannot be 0 or negative.");
-                                    }
-                                }
-                                else {
-                                    System.out.println("Missing data for opening an account.");
-                                }
-
-                            }
-                            default ->{
-                                if(inputList.length == 6  && isValidDouble(inputList[5])) {
-                                    double bal = Double.parseDouble(inputList[5]);
-                                    if(bal > 0){
-                                        Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3],
-                                                inputList[4], bal, "", "", "");
-                                        operationO(add, accountDatabase);
-                                    }
-                                    else{
-                                        System.out.println("Initial deposit cannot be 0 or negative.");
-                                    }
-                                }
-                                else{
-                                    System.out.println("Missing data for opening an account.");
-                                }
-                            }
-                        }
-                        break;
-
-                    case "C":
-                        ////inputList[i] (i=1 Date, i=2 TimeSlot, i=3 Location)
-                        Account remove = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], 0,
-                                "", "", "");
-                        operationC(remove, accountDatabase);
-                        break;
-                    case "W":
-                        if(isValidDouble(inputList[5])){
-                            double with = Double.parseDouble(inputList[5]);
-                            Account withdrawal = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], with,
-                                        "", "", "");
-                            operationW(withdrawal, accountDatabase);
-                        }
-                        else{
-                            System.out.println("Not a valid amount");
-                        }
-                        break;
-                    case "P":
-                        operationP(accountDatabase);
-                        break;
-                    case "PI":
-                        operationPI(accountDatabase);
-                        break;
-                    case "PD":
-                        operationUB(accountDatabase);
-                        break;
-                }
+                programRun = switchHelper (firstCMD, inputList, accountDatabase);
             }
         }
     }

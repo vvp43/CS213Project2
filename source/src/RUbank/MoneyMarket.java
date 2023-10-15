@@ -20,11 +20,6 @@ public class MoneyMarket extends Savings{
         this.isLoyal = true;
         this.withdrawal = withdrawal;
     }
-    public int with(){
-        int temp = withdrawal;
-        withdrawal++;
-        return temp;
-    }
 
     public void setWithdrawal(int input) {
         withdrawal = input;

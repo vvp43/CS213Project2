@@ -136,12 +136,14 @@ public class AccountDatabase {
             else{
                 if ((accounts[find(account)].balance >= account.balance)){ // withdraw from MM
                     MoneyMarket temp = (MoneyMarket) accounts[find(account)];
-                    if(temp.with() > 3){
-                        System.out.println("WITHDRAWING...");
+                    if(temp.getWithdrawal() > 3){
+                        //System.out.println("WITHDRAWING...");
+                        temp.setWithdrawal(temp.getWithdrawal()+1);
                         temp.balance -= 10+account.balance;
                     }
                     else{
-                        System.out.println("WITHDRAWING...");
+                        //System.out.println("WITHDRAWING...");
+                        temp.setWithdrawal(temp.getWithdrawal()+1);
                         temp.balance -= account.balance;
                     }
                     temp.updateStatus();
@@ -157,19 +159,19 @@ public class AccountDatabase {
         } else
         if (account.getClass() == Checking.class ||
                 account.getClass() == CollegeChecking.class) { // depositing from checking/college
-            System.out.println("DEPOSITING...");
+            //System.out.println("DEPOSITING...");
             accounts[find(account)].balance += account.balance;
         }
         else if(account.getClass() == Savings.class){ // depositing from savings
             Savings temp = (Savings) accounts[find(account)];
-            System.out.println("DEPOSITING...");
+            //System.out.println("DEPOSITING...");
             temp.balance += account.balance;
             temp.updateStatus();
         }
         else{
             //printtest();
             MoneyMarket temp = (MoneyMarket) accounts[find(account)]; // depositing from MM
-            System.out.println("DEPOSITING...");
+            //System.out.println("DEPOSITING...");
             temp.balance += account.balance;
             temp.updateStatus();
         }
