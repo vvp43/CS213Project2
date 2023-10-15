@@ -125,7 +125,25 @@ public class TransactionManager {
     }
 
 
-
+    public boolean checkIfCandCCExist(Account a, AccountDatabase ad){
+        Account[] list = ad.getAccounts();
+        if(list!=null) {
+            if (a.getClass() == CollegeChecking.class || a.getClass() == Checking.class) {
+                for (Account acc : list) {
+                    if (acc != null) {
+                        if (acc.holder.equals(a.holder) && acc.getClass() == Checking.class) {
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                            return true;
+                        } else if (acc.holder.equals(a.holder) && acc.getClass() == CollegeChecking.class) {
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 
 
 
@@ -137,13 +155,15 @@ public class TransactionManager {
      * @param ad , short for Account Database
      */
     private void operationO(Account a, AccountDatabase ad) {
-        //Check if any elements of event is invalid and display error message
 
+        if(a.balance <= 0){
+            System.out.println("Initial deposit cannot be 0 or negative.");
+            return;
+        }
         if(a.getClass() == MoneyMarket.class && a.balance < 2000) {
             System.out.println("Minimum of $2000 to open a Money Market account.");
             return;
         }
-        //System.out.println(a.holder.getDob().toString());
         if(!a.holder.getDob().isValid()){
             return;
         }
@@ -151,29 +171,17 @@ public class TransactionManager {
             System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24");
             return;
         }
-        Account[] list = ad.getAccounts();
-        if(list!=null) {
-            if (a.getClass() == CollegeChecking.class || a.getClass() == Checking.class) {
-                for (Account acc : list) {
-                    if (acc != null) {
-                        if (acc.holder.equals(a.holder) && acc.getClass() == Checking.class) {
-                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
-                            return;
-                        } else if (acc.holder.equals(a.holder) && acc.getClass() == CollegeChecking.class) {
-                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
-                            return;
-                        }
-                    }
-                }
-            }
+        if(a.getClass() == CollegeChecking.class && (((CollegeChecking) a).getCampus() != Campus.NEW_BRUNSWICK ||((CollegeChecking) a).getCampus() != Campus.CAMDEN || ((CollegeChecking) a).getCampus() != Campus.NEWARK)){
+            System.out.println("DOB invalid: "+a.holder.getDob().toString()+" over 24");
+            return;
+        }
+        if(checkIfCandCCExist(a, ad)){
+            return;
         }
         if(!ad.open(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
                     " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
-        }
-        else{
+        } else{
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
                     " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened");
             ad.open(a);
@@ -365,40 +373,38 @@ public class TransactionManager {
      * @param inputList list of strings where each element represents one part of the parsed command
      * @param accountDatabase AccountDatabase object used to perform various actions
      */
-    private void chooseAccount (String inputList[], AccountDatabase accountDatabase){
+    private void chooseAccount (String[] inputList, AccountDatabase accountDatabase){
         switch (inputList[1]) {
             case "CC" -> {
-                if(inputList.length == 7 && isValidDouble(inputList[5])) {
-                    double bal = Double.parseDouble(inputList[5]);
-                    if(bal > 0){
+                if(inputList.length == 7) {
+                    if(isValidDouble(inputList[5])) { double bal = Double.parseDouble(inputList[5]);
                         Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], bal, inputList[6], "", "");
                         operationO(add, accountDatabase);
-                    } else {
-                        System.out.println("Initial deposit cannot be 0 or negative.");
+                    }
+                    else {
+                        System.out.println("Not a valid amount.");
                     }
                 } else {
                     System.out.println("Missing data for opening an account.");
                 }
-            } case "S" -> {
-                double bal = Double.parseDouble(inputList[5]);
-                if(inputList.length == 7 && isValidDouble(inputList[5])) {
-                    if(bal > 0) {
+            } case "S" -> { double bal = Double.parseDouble(inputList[5]);
+                if(inputList.length == 7){
+                    if(isValidDouble(inputList[5])) {
                         Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], bal, "", inputList[6], "");
                         operationO(add, accountDatabase);
                     } else {
-                        System.out.println("Initial deposit cannot be 0 or negative.");
+                        System.out.println("Not a valid amount.");
                     }
                 } else {
                     System.out.println("Missing data for opening an account.");
                 }
             } default ->{
-                if(inputList.length == 6  && isValidDouble(inputList[5])) {
-                    double bal = Double.parseDouble(inputList[5]);
-                    if(bal > 0){
+                if(inputList.length == 6) { double bal = Double.parseDouble(inputList[5]);
+                    if(isValidDouble(inputList[5])){
                         Account add = createAccountFromStrings(inputList[1], inputList[2], inputList[3], inputList[4], bal, "", "", "");
                         operationO(add, accountDatabase);
                     } else{
-                        System.out.println("Initial deposit cannot be 0 or negative.");
+                        System.out.println("Not a valid amount.");
                     }
                 } else{
                     System.out.println("Missing data for opening an account.");
@@ -448,30 +454,18 @@ public class TransactionManager {
     }
     private boolean switchHelper(String firstCMD, String[] inputList, AccountDatabase accountDatabase){
         switch (firstCMD) {
-            case "Q":
+            case "Q" -> {
                 System.out.println("Event Organizer terminated.");
                 return false;
-            case "O":
-                chooseAccount(inputList, accountDatabase);
-                break;
-            case "C":
-                closeCheckAndRun(inputList, accountDatabase);
-                break;
-            case "D":
-                depositCheckAndRun(inputList, accountDatabase);
-                break;
-            case "W":
-                withdrawalCheckandRun(inputList, accountDatabase);
-                break;
-            case "P":
-                operationP(accountDatabase);
-                break;
-            case "PI":
-                operationPI(accountDatabase);
-                break;
-            case "PD":
-                operationUB(accountDatabase);
-                break;
+            }
+            case "O" -> chooseAccount(inputList, accountDatabase);
+            case "C" -> closeCheckAndRun(inputList, accountDatabase);
+            case "D" -> depositCheckAndRun(inputList, accountDatabase);
+            case "W" -> withdrawalCheckandRun(inputList, accountDatabase);
+            case "P" -> operationP(accountDatabase);
+            case "PI" -> operationPI(accountDatabase);
+            case "PD" -> operationUB(accountDatabase);
+            case "UB" -> accountDatabase.printUpdatedBalances();
         }
         return true;
     }

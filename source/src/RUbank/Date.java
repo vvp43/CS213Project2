@@ -192,20 +192,51 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
-    private boolean isUnder16(Date input) {
-        int currentYear = curr.get(Calendar.YEAR);
-        int currentMonth = curr.get(Calendar.MONTH) + 1;
-        int currentDay = curr.get(Calendar.DAY_OF_MONTH);
+    private boolean isUnder16(Date input) { // doesnt work>>???
+        Calendar cmp = Calendar.getInstance();
+        int currentYear = input.event.get(Calendar.YEAR);
+        int currentMonth = input.event.get(Calendar.MONTH) - 1;
+        int currentDay = input.event.get(Calendar.DAY_OF_MONTH);
 
-        return currentYear - input.getYear() >= 16;
+        Calendar temptemp = Calendar.getInstance();
+        temptemp.set(currentYear, currentMonth, currentDay);
+
+        cmp.add(Calendar.YEAR, -16);
+        System.out.println(cmp.get(Calendar.YEAR));
+        System.out.println(cmp.get(Calendar.MONTH));
+        System.out.println(cmp.get(Calendar.DAY_OF_MONTH));
+
+
+        if(temptemp.after(cmp)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
     }
 
     public boolean isUnder24() {
-        int currentYear = curr.get(Calendar.YEAR);
-        int currentMonth = curr.get(Calendar.MONTH) + 1;
-        int currentDay = curr.get(Calendar.DAY_OF_MONTH);
+        Calendar cmp = Calendar.getInstance();
+        int currentYear = event.get(Calendar.YEAR);
+        int currentMonth = event.get(Calendar.MONTH) - 1;
+        int currentDay = event.get(Calendar.DAY_OF_MONTH);
 
-        return currentYear - this.year < 24;
+        Calendar temptemp = Calendar.getInstance();
+        temptemp.set(currentYear, currentMonth, currentDay);
+
+        cmp.add(Calendar.YEAR, -24);
+        System.out.println(cmp.get(Calendar.YEAR));
+        System.out.println(temptemp.get(Calendar.MONTH));
+        System.out.println(temptemp.get(Calendar.DAY_OF_MONTH));
+
+
+        if(temptemp.after(cmp)){
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     /**
@@ -221,20 +252,23 @@ public class Date implements Comparable<Date> {
         Date thisEvent = new Date(y, m, d);
         if(isValidDate(thisEvent)) {
             if (!currentDay(thisEvent) && !isFutureDate(thisEvent)) {
-                if (isUnder16(thisEvent)) {
+                if (!isUnder16(thisEvent)) {
                     return true;
-                } else {
-                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": under 16!");
                 }
+                else{
+                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": under 16!");
+                    return false;
 
+                }
             } else {
                 System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": cannot be today or a future day.");
+                return false;
             }
         }
         else{
             System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": not a valid calendar date!");
+            return false;
         }
-        return false;
     }
 
 
@@ -260,19 +294,20 @@ public class Date implements Comparable<Date> {
         /**
          * Test cases
          */
-        Date a = new Date(2023, 5, 12);
+        Date a = new Date(1999, 10, 20);
         Date b = new Date(2023, 11, 12);
         Date c = new Date(2023, 10, 12);
         Date d = new Date(20057, 11, 32);
-        Date e = new Date(2007, 10, 13);
+        Date g = new Date(2007, 10, 31);
+        Date e = new Date(2007, 10, 1);
         Date f = new Date(1987, 1, 15);
+        Date aw = new Date(2007, 10, 15);
 
 
-        System.out.println("Too young Case: "+a.isValid());
-        System.out.println("Future case: "+b.isValid());
-        System.out.println("Today case:" +c.isValid());
-        System.out.println("Invalid Date case:" +d.isValid());
-        System.out.println("Over 16 case:" +e.isValid());
-        System.out.println("Over 16 case? should be true:" +f.isValid());
+//        System.out.println(e.isValid());
+//        System.out.println(g.isValid());
+//        System.out.println(f.isValid());
+//        System.out.println(aw.isValid());
+        System.out.println(a.isUnder24());
     }
 }

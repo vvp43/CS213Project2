@@ -52,10 +52,10 @@ O  MM   Roy Brooks 3/32/2008 2909.10
 O  MM   Roy Brooks 0/2/2008 2909.10
 O  MM   Roy Brooks 13/3/2008 2909.10
 
-O  MM   Roy Brooks 10/31/2007 2909.10
+O  MM   Roy Brooks 10/31/2007 2909.10 // problem deosnt say under 16
 O  MM   Roy Brooks 10/1/2007 2909.10
 
-O  CC   Roy Brooks 10/31/1999 2909.10 1
+O  CC   Roy Brooks 10/31/1999 2909.10 1 // problem doesnt say too under 24
 O  CC   Roy Brooks 10/1/1999 3000 1
 
 O  MM   Roy Brooks 10/31/1979 2909.10

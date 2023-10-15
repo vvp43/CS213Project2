@@ -44,13 +44,7 @@ public abstract class Account implements Comparable<Account>{
             return temp; // return if last name is alphabetically first
         }
         else{
-            int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
-            if(temp2 != 0){
-                return temp2; // return if last name is alphabetically same but different first name
-            }
-            else{
-                return holder.getDob().compareTo(a.holder.getDob()); // return if everythihg before is equal but diff DOB
-            }
+            return holder.getFname().compareToIgnoreCase(a.holder.getFname());
         }
     }
 }
