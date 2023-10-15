@@ -456,7 +456,7 @@ public class TransactionManager {
     private boolean switchHelper(String firstCMD, String[] inputList, AccountDatabase accountDatabase){
         switch (firstCMD) {
             case "Q" -> {
-                System.out.println("Event Organizer terminated.");
+                System.out.println("Transaction Manager is terminated.");
                 return false;
             }
             case "O" -> chooseAccount(inputList, accountDatabase);
@@ -475,7 +475,7 @@ public class TransactionManager {
      * and performing the various tasks that are available to the user.
      */
     public void run() {
-        System.out.println("Event Organizer running...\n");
+        System.out.println("Transaction Manager is running.\n");
         Scanner scanObj = new Scanner(System.in);
         boolean programRun = true;
         AccountDatabase accountDatabase = new AccountDatabase();
@@ -485,7 +485,7 @@ public class TransactionManager {
             String[] inputList = command.replaceAll("(^\\s+|\\s+$)", "").split("\\s+");//split the whole line into elements of String array
             String firstCMD = inputList[0];
             if (!isValidCommand(firstCMD)) {
-                System.out.println(firstCMD + " is an invalid command!");
+                System.out.println("Invalid command!");
             } else {
                 programRun = switchHelper (firstCMD, inputList, accountDatabase);
             }
