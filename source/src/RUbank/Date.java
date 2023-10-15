@@ -61,6 +61,21 @@ public class Date implements Comparable<Date> {
      * @return 1 if current date is after input date, 0 if current date is the same with output date, -1 if current date is before input date
      */
     @Override
+    public String toString(){
+        return month+"/"+day+"/"+year;
+    }
+
+    @Override
+    public boolean equals(Object input){
+        Date a = (Date) input;
+        int inputDateInt = a.year * 10000 + a.month * 100 + a.day;
+        int currentDateInt = this.year * 10000 + this.month * 100 + this.day;
+        int diff = currentDateInt - inputDateInt;
+        return diff == 0;
+
+
+    }
+    @Override
     public int compareTo(Date input) {
         int inputDateInt = input.year * 10000 + input.month * 100 + input.day;
         int currentDateInt = this.year * 10000 + this.month * 100 + this.day;
@@ -163,6 +178,66 @@ public class Date implements Comparable<Date> {
         return false;
     }
 
+    private boolean currentDay(Date inputDate) {
+        int currentYear = curr.get(Calendar.YEAR);
+        int currentMonth = curr.get(Calendar.MONTH) + 1;
+        int currentDay = curr.get(Calendar.DAY_OF_MONTH);
+
+        //System.out.println(currentYear+" "+currentMonth+" "+currentDay);
+        //System.out.println(inputDate.getYear()+" "+inputDate.getMonth()+" "+inputDate.getDay());
+        if(inputDate.getYear() == currentYear && inputDate.getMonth() == currentMonth &&
+                inputDate.getDay() == currentDay){
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isUnder16(Date input) { // doesnt work>>???
+        Calendar cmp = Calendar.getInstance();
+        int currentYear = input.event.get(Calendar.YEAR);
+        int currentMonth = input.event.get(Calendar.MONTH) - 1;
+        int currentDay = input.event.get(Calendar.DAY_OF_MONTH);
+
+        Calendar temptemp = Calendar.getInstance();
+        temptemp.set(currentYear, currentMonth, currentDay);
+
+        cmp.add(Calendar.YEAR, -16);
+//        System.out.println(cmp.get(Calendar.YEAR));
+//        System.out.println(cmp.get(Calendar.MONTH));
+//        System.out.println(cmp.get(Calendar.DAY_OF_MONTH));
+
+
+        if(temptemp.after(cmp)){
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public boolean isUnder24() {
+        Calendar cmp = Calendar.getInstance();
+        int currentYear = event.get(Calendar.YEAR);
+        int currentMonth = event.get(Calendar.MONTH) - 1;
+        int currentDay = event.get(Calendar.DAY_OF_MONTH);
+
+        Calendar temptemp = Calendar.getInstance();
+        temptemp.set(currentYear, currentMonth, currentDay);
+
+        cmp.add(Calendar.YEAR, -24);
+//        System.out.println(cmp.get(Calendar.YEAR));
+//        System.out.println(temptemp.get(Calendar.MONTH));
+//        System.out.println(temptemp.get(Calendar.DAY_OF_MONTH));
+
+
+        if(temptemp.after(cmp)){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     /**
      * isValid() method
@@ -175,26 +250,29 @@ public class Date implements Comparable<Date> {
         int m = this.month;
         int d = this.day;
         Date thisEvent = new Date(y, m, d);
-        //1st step: checks if event date is valid
-        if (isValidDate(thisEvent)) {
-            //2nd step: checks if event date is in the future
-            if (isFutureDate(thisEvent)) {
-                //3rd step: check if event date is within 6 months
-                if (isWithinSixMonths(thisEvent)) {
-                    //4th step: check if event date is duplicated
+        if(isValidDate(thisEvent)) {
+            if (!currentDay(thisEvent) && !isFutureDate(thisEvent)) {
+                if (!isUnder16(thisEvent)) {
                     return true;
-                } else {
-                    System.out.println(m + "/" + d + "/" + y + ": Event date must be within 6 months!");
+                }
+                else{
+                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": under 16!");
                     return false;
+
                 }
             } else {
-                System.out.println(m + "/" + d + "/" + y + ": Event date must be a future date!");
+                System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": cannot be today or a future day.");
                 return false;
             }
         }
-        System.out.println(m + "/" + d + "/" + y + ": Invalid calendar date!");
-        return false;
+        else{
+            System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": not a valid calendar date!");
+            return false;
+        }
     }
+
+
+
 
     /**
      * Testbed main()
@@ -216,16 +294,20 @@ public class Date implements Comparable<Date> {
         /**
          * Test cases
          */
-        Date a = new Date(2024, 2, 29);
-        Date b = new Date(2023, 2, 29);
-        Date c = new Date(2022, 2, 29);
-        Date d = new Date(2025, 3, 31);
+        Date a = new Date(1999, 10, 20);
+        Date b = new Date(2023, 11, 12);
+        Date c = new Date(2023, 10, 12);
+        Date d = new Date(20057, 11, 32);
+        Date g = new Date(2007, 10, 31);
+        Date e = new Date(2007, 10, 1);
+        Date f = new Date(1987, 1, 15);
+        Date aw = new Date(2007, 10, 15);
 
 
-        //isValid() complete method
-        System.out.println(a.isValid());
-        System.out.println(b.isValid());
-        System.out.println(c.isValid());
-        System.out.println(d.isValid());
+//        System.out.println(e.isValid());
+//        System.out.println(g.isValid());
+//        System.out.println(f.isValid());
+//        System.out.println(aw.isValid());
+        System.out.println(a.isUnder24());
     }
 }
