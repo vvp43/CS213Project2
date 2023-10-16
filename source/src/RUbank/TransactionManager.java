@@ -40,13 +40,14 @@ public class TransactionManager {
 
     private boolean createLoyaltyFromString(String loyalty) {
         boolean temp = false;
-        switch(loyalty){
-            case "0":
-                temp = false;
-                break;
-            case "1":
-                temp = true;
-                break;
+        if(isStringInteger(loyalty)){
+            switch(loyalty){
+                case "0":
+                    break;
+                case "1":
+                    temp = true;
+                    break;
+            }
         }
         return temp;
     }
@@ -133,10 +134,10 @@ public class TransactionManager {
                 for (Account acc : list) {
                     if (acc != null) {
                         if (acc.holder.equals(a.holder) && acc.getClass() == Checking.class) {
-                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database.");
                             return true;
                         } else if (acc.holder.equals(a.holder) && acc.getClass() == CollegeChecking.class) {
-                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database.");
                             return true;
                         }
                     }
@@ -251,13 +252,14 @@ public class TransactionManager {
 
     private void operationD(Account a, AccountDatabase ad) {
         updateAccountForOperations(a, ad);
-        if(a.balance < 0){
+        System.out.println("depositing from "+a.toString());
+        if(a.balance <= 0){
             System.out.println("Deposit - amount cannot be 0 or negative.");
             return;
         }
         if(!ad.contains(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Deposit - " +
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" " +
                     "is not in the database.");
         }
         else{
@@ -276,7 +278,7 @@ public class TransactionManager {
      */
     private void operationW(Account a, AccountDatabase ad) {
         updateAccountForOperations(a, ad);
-        if(a.balance < 0){
+        if(a.balance <= 0){
             System.out.println("Withdraw - amount cannot be 0 or negative.");
             return;
         }
@@ -286,7 +288,9 @@ public class TransactionManager {
                 if (acc != null) {
                     if(acc.getClass() == a.getClass()){
                         if(acc.equals(a) && (a.balance > acc.balance)){
-                            System.out.println("Withdraw - insufficient fund.");
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
+                                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw - " +
+                                    "insufficient fund.");
                             return;
                         }
                     }
@@ -299,7 +303,7 @@ public class TransactionManager {
                     if(acc.getClass() == a.getClass()){
                         //System.out.println(acc.balance-(a.balance+10));
                         if(acc.equals(a) && ((acc.balance - (a.balance+10) < 0))){
-                            System.out.println("Withdraw - insufficient fund.");
+                            System.out.println(a.holder.getFname()+" "+a.holder.getLname()+ " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw - " + "insufficient fund.");
                             return;
                         }
                     }
@@ -308,8 +312,7 @@ public class TransactionManager {
         }
         if(!ad.contains(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" Withdraw - " +
-                    "is not in the database.");
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is not in the database.");
         }
         else{
             ad.withdraw(a);
@@ -422,10 +425,10 @@ public class TransactionManager {
                         "", "", "");
                 operationW(withdrawal, accountDatabase);
             } else{
-                System.out.println("Not a valid amount");
+                System.out.println("Not a valid amount.");
             }
         } else{
-            System.out.println("Missing data for depositing into an account.");
+            System.out.println("Missing data for withdrawal.");
         }
     }
 
@@ -435,7 +438,7 @@ public class TransactionManager {
                     "", "", "");
             operationC(remove, accountDatabase);
         } else{
-            System.out.println("Missing data closing an account.");
+            System.out.println("Missing data for closing an account.");
         }
     }
 
@@ -447,7 +450,7 @@ public class TransactionManager {
                         "", "", "");
                 operationD(deposit, accountDatabase);
             } else{
-                System.out.println("Not a valid amount");
+                System.out.println("Not a valid amount.");
             }
         } else{
             System.out.println("Missing data depositing into an account.");

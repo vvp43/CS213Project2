@@ -58,6 +58,17 @@ public class MoneyMarket extends Savings{
         }
 
     }
+    /**
+     * updateStatus() method: updates the Savings account's loyalty status based on balance
+     */
+    public void updateStatus(){
+        if(balance < 2000){
+            isLoyal = false;
+        }
+        else{
+            isLoyal = true;
+        }
+    }
 
     /**
      * monthlyFee Override: returns the monthly fee of a MM savings account
@@ -65,10 +76,17 @@ public class MoneyMarket extends Savings{
      */
     @Override
     public double monthlyFee() {
+        int with = 0;
+        if(withdrawal > 3){
+            for(int i = 3; i < withdrawal; i++){
+                with++;
+            }
+            with*=10;
+        }
         if (balance >= 2000) {
-            return 0;
+            return with;
         } else {
-            return marketSavingsMonthlyFee;
+            return with+marketSavingsMonthlyFee;
         }
     }
 
@@ -90,11 +108,11 @@ public class MoneyMarket extends Savings{
         DecimalFormat df = new DecimalFormat("#,###.00");
         if(isLoyal){
             return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
-                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::is loyal::withdrawl "+withdrawal;
+                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::is loyal::withdrawal: "+withdrawal;
         }
         else{
             return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
-                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::withdrawl "+withdrawal;
+                    +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::withdrawal: "+withdrawal;
         }
     }
     /**

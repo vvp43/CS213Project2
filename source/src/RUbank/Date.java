@@ -277,7 +277,7 @@ public class Date implements Comparable<Date> {
                     return true;
                 }
                 else{
-                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + " under 16!");
+                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + " under 16.");
                     return false;
 
                 }

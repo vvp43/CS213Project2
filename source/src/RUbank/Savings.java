@@ -27,17 +27,7 @@ public class Savings extends Account{
         this.isLoyal = isLoyal;
     }
 
-    /**
-     * updateStatus() method: updates the Savings account's loyalty status based on balance
-     */
-    public void updateStatus(){
-        if(balance < 2000){
-            isLoyal = false;
-        }
-        else{
-            isLoyal = true;
-        }
-    }
+
 
     /**
      * setIsLoyal() method: sets loyalty status to given input
@@ -119,7 +109,7 @@ public class Savings extends Account{
     public boolean equals(Object savingAccount){
         Savings s = (Savings) savingAccount;
         //System.out.println("CHECKING SHIZ IN HERE");
-        return super.equals(s) && (isLoyal == s.isLoyal);
+        return super.equals(s);
     }
 
 

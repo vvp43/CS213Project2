@@ -169,7 +169,6 @@ public class AccountDatabase {
                 Savings temp = (Savings) accounts[find(account)];
                 //System.out.println("WITHDRAWING...");
                 temp.balance -= account.balance;
-                temp.updateStatus();
                 return true;
             }
         }
@@ -211,7 +210,6 @@ public class AccountDatabase {
             Savings temp = (Savings) accounts[find(account)];
             //System.out.println("DEPOSITING...");
             temp.balance += account.balance;
-            temp.updateStatus();
         }
         else{
             //printtest();
@@ -279,7 +277,7 @@ public class AccountDatabase {
                     System.out.println(a.toString());
                 }
             }
-            System.out.println("*end of list");
+            System.out.println("*end of list.");
         }
     } //sort by account type and profile
 
@@ -288,7 +286,7 @@ public class AccountDatabase {
      * their respective monthly interest and fees at the end of the string, then prints.
      */
     public void printFeesAndInterests() {
-        DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df = new DecimalFormat("#,##0.00");
         if(accounts[0] != null) {
             Account[] copy = new Account[numAcct];
             // copy array first
@@ -301,10 +299,10 @@ public class AccountDatabase {
             System.out.println("*list of accounts with fee and monthly interest");
             for (Account a : copy) {
                 if (a != null) {
-                    System.out.println(a.toString()+"::fee: $"+df.format(a.monthlyFee())+"::monthly interest $"+df.format(a.monthlyInterest()));
+                    System.out.println(a.toString()+"::fee $"+df.format(a.monthlyFee())+"::monthly interest $"+df.format(a.monthlyInterest()));
                 }
             }
-            System.out.println("end of list.");
+            System.out.println("*end of list.");
         }
 
     } //calculate interests/fees
