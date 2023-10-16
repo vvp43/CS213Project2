@@ -234,7 +234,7 @@ public class AccountDatabase {
             swap = false;
             for (int i = 0; i < numAcct - 1; i++) {
                 if (sorted[i + 1] != null) {
-                    if (sorted[i].getClass().getSimpleName().compareToIgnoreCase(sorted[i + 1].getClass().getSimpleName()) > 0) {
+                    if (sorted[i].compareTo(sorted[i + 1]) > 0) { //need to test compaoreTo
                         Account temp = sorted[i];
                         sorted[i] = sorted[i + 1];
                         sorted[i + 1] = temp;
@@ -243,11 +243,12 @@ public class AccountDatabase {
                 }
             }
         } while (swap);
+
         do {
             swap = false;
             for (int i = 0; i < numAcct - 1; i++) {
                 if (sorted[i + 1] != null) {
-                    if (sorted[i].compareTo(sorted[i+1]) > 1) { //need to test compaoreTo
+                    if (sorted[i].getClass().getSimpleName().compareToIgnoreCase(sorted[i + 1].getClass().getSimpleName()) > 0) {
                         Account temp = sorted[i];
                         sorted[i] = sorted[i + 1];
                         sorted[i + 1] = temp;
@@ -313,7 +314,7 @@ public class AccountDatabase {
      * profile, then prints.
      */
     public void printUpdatedBalances() {
-        DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df = new DecimalFormat("#,###.00");
         if(this.accounts == null) {
             System.out.println("Account Database is empty!");
             return;

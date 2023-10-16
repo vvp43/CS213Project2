@@ -99,7 +99,7 @@ public class Savings extends Account{
      */
     @Override
     public String toString(){
-        DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df = new DecimalFormat("#,###.00");
         if(isLoyal){
             return "Savings::"+holder.getFname()+" "+holder.getLname()+" "
                     +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::is loyal";
@@ -122,8 +122,5 @@ public class Savings extends Account{
         return super.equals(s) && (isLoyal == s.isLoyal);
     }
 
-    @Override
-    public int compareTo(Account o) {
-        return 0;
-    }
+
 }

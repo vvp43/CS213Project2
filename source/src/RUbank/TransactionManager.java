@@ -181,10 +181,10 @@ public class TransactionManager {
         }
         if(!ad.open(a)){
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database");
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" is already in the database.");
         } else{
             System.out.println(a.holder.getFname()+" "+a.holder.getLname()+
-                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened");
+                    " "+a.holder.getDob().toString() +typeCheckCharacterReturn(a) +" opened.");
             ad.open(a);
         }
     }

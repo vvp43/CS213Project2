@@ -47,9 +47,11 @@ public class Checking extends Account {
     public Checking(Profile holder, double balance) {
         super(holder, balance);
     }
+
 }
     /**
      * compareTo() method:
      * @param o the object to be compared.
      * @return
      */
+

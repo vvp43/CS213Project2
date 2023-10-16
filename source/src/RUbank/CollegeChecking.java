@@ -68,7 +68,7 @@ public class CollegeChecking extends Checking {
      */
     @Override
     public String toString(){
-        DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df = new DecimalFormat("#,###.00");
         return "College Checking::"+holder.getFname()+" "+holder.getLname()+" "
                 +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::"+campus;
     }

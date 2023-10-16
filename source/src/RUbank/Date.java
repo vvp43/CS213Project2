@@ -77,19 +77,29 @@ public class Date implements Comparable<Date> {
     }
     @Override
     public int compareTo(Date input) {
-        int inputDateInt = input.year * 10000 + input.month * 100 + input.day;
-        int currentDateInt = this.year * 10000 + this.month * 100 + this.day;
-        int diff = currentDateInt - inputDateInt;
-
-        if (diff > 0) {
-            return 1;
+//        int inputDateInt = input.year * 10000 + input.month * 100 + input.day;
+//        int currentDateInt = this.year * 10000 + this.month * 100 + this.day;
+//        int diff = currentDateInt - inputDateInt;
+//
+//        if (diff > 0) {
+//            return 1;
+//        }
+//
+//        if (diff == 0) {
+//            return 0;
+//        }
+//
+//        return -1;
+        int y = Integer.compare(this.year, input.year);
+        if(y != 0){
+            return y;
         }
-
-        if (diff == 0) {
-            return 0;
+        int m = Integer.compare(this.month, input.month);
+        if(m != 0){
+            return m;
         }
+        return Integer.compare(this.day, input.day);
 
-        return -1;
     }
 
 
@@ -267,17 +277,17 @@ public class Date implements Comparable<Date> {
                     return true;
                 }
                 else{
-                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": under 16!");
+                    System.out.println("DOB invalid: " + m + "/" + d + "/" + y + " under 16!");
                     return false;
 
                 }
             } else {
-                System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": cannot be today or a future day.");
+                System.out.println("DOB invalid: " + m + "/" + d + "/" + y + " cannot be today or a future day.");
                 return false;
             }
         }
         else{
-            System.out.println("DOB invalid: " + m + "/" + d + "/" + y + ": not a valid calendar date!");
+            System.out.println("DOB invalid: " + m + "/" + d + "/" + y + " not a valid calendar date!");
             return false;
         }
     }
@@ -312,7 +322,7 @@ public class Date implements Comparable<Date> {
         Date g = new Date(2007, 10, 31);
         Date e = new Date(2007, 10, 1);
         Date f = new Date(1987, 1, 15);
-        Date aw = new Date(2007, 10, 15);
+        Date aw = new Date(1999, 10, 31);
 
 //
 //        System.out.println(e.isValid());

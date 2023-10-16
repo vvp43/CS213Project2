@@ -39,7 +39,7 @@ public abstract class Account implements Comparable<Account>{
      */
     @Override
     public String toString(){
-        DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df = new DecimalFormat("#,###.00");
         return "Checking::"+holder.getFname()+" "+holder.getLname()+" "
                 +holder.getDob().toString()+"::Balance $"+df.format(balance);
     }
@@ -69,12 +69,65 @@ public abstract class Account implements Comparable<Account>{
      */
     @Override
     public int compareTo(Account a){
-        int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
-        if(temp != 0){
-            return temp; // return if last name is alphabetically first
+        if(a.getClass() == Checking.class){
+            int ab = Checking.class.getSimpleName().compareToIgnoreCase(a.getClass().getSimpleName());
+            if(ab != 0){
+                return ab;
+            }
+            int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
+            if(temp != 0){
+                return temp; // return if last name is alphabetically first
+            }
+            int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
+            if(temp2 != 0){
+                return temp2;
+            }
+            return holder.getDob().compareTo(a.holder.getDob());
+        }
+        else if(a.getClass() == CollegeChecking.class){
+            int ab = CollegeChecking.class.getSimpleName().compareToIgnoreCase(a.getClass().getSimpleName());
+            if(ab != 0){
+                return ab;
+            }
+            int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
+            if(temp != 0){
+                return temp; // return if last name is alphabetically first
+            }
+            int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
+            if(temp2 != 0){
+                return temp2;
+            }
+            return holder.getDob().compareTo(a.holder.getDob());
+        }
+        else if(a.getClass() == Savings.class){
+            int ab = Savings.class.getSimpleName().compareToIgnoreCase(a.getClass().getSimpleName());
+            if(ab != 0){
+                return ab;
+            }
+            int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
+            if(temp != 0){
+                return temp; // return if last name is alphabetically first
+            }
+            int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
+            if(temp2 != 0){
+                return temp2;
+            }
+            return holder.getDob().compareTo(a.holder.getDob());
         }
         else{
-            return holder.getFname().compareToIgnoreCase(a.holder.getFname());
+            int ab = MoneyMarket.class.getSimpleName().compareToIgnoreCase(a.getClass().getSimpleName());
+            if(ab != 0){
+                return ab;
+            }
+            int temp = holder.getLname().compareToIgnoreCase(a.holder.getLname());
+            if(temp != 0){
+                return temp; // return if last name is alphabetically first
+            }
+            int temp2 = holder.getFname().compareToIgnoreCase(a.holder.getFname());
+            if(temp2 != 0){
+                return temp2;
+            }
+            return holder.getDob().compareTo(a.holder.getDob());
         }
     }
 }

@@ -87,7 +87,7 @@ public class MoneyMarket extends Savings{
      */
     @Override
     public String toString(){
-        DecimalFormat df = new DecimalFormat("#0.00");
+        DecimalFormat df = new DecimalFormat("#,###.00");
         if(isLoyal){
             return "Money Market::Savings::"+holder.getFname()+" "+holder.getLname()+" "
                     +holder.getDob().toString()+"::Balance $"+df.format(balance)+"::is loyal::withdrawl "+withdrawal;
