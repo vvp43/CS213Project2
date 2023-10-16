@@ -10,6 +10,11 @@ public class AccountDatabase {
     private Account[] accounts; //list of various types of accounts
     private int numAcct; //number of accounts in the array
 
+    /**
+     * getAccount() method: Getter for the accounts[] array.
+     *
+     * @return accounts[] array
+     */
     public Account[] getAccounts(){
         return this.accounts;
     }
@@ -26,6 +31,9 @@ public class AccountDatabase {
         return -1;
     } //search for an account in the array
 
+    /**
+     * grow() method: increases array size by 4, and numAcct accordingly
+     */
     private void grow() {
         int newNumofEvents = numAcct + 4;
         Account[] newAccounts = new Account[newNumofEvents];
@@ -37,6 +45,11 @@ public class AccountDatabase {
         numAcct = newNumofEvents;
     } //increase the capacity by 4
 
+    /**
+     * isEmpty(): Checks if accounts[] array is empty
+     *
+     * @return true if is empty, no otherwise
+     */
     public boolean isEmpty() {
         boolean check = true;
 
@@ -52,9 +65,23 @@ public class AccountDatabase {
         return check;
     }
 
+    /**
+     * Contains() method: Checks if a given account is within the accounts[] array by using find()
+     *
+     * @param account Account to search for
+     * @return true if found, false otherwise
+     */
     public boolean contains(Account account) {
         return find(account) != -1;
     } //overload if necessary
+
+    /**
+     * open() method: Opens an account by adding the object to the accounts[] array, while checking for
+     * existing accounts.
+     *
+     * @param account Account object to add
+     * @return true if account is successfully added, false otherwise
+     */
     public boolean open(Account account) {
         if (numAcct == 0) {
             grow();
@@ -92,7 +119,13 @@ public class AccountDatabase {
         }
     } //add a new account
 
-
+    /**
+     * close() method: Closes an account by removing it from the accounts[] array by setting it to null, and then
+     * rearranging array back in order.
+     *
+     * @param account Account to be deleted
+     * @return true if successfully removed, false otherwise
+     */
     public boolean close(Account account) {
         if (!contains(account)) {
             return false;
@@ -112,6 +145,13 @@ public class AccountDatabase {
         }
     } //remove the given account
 
+    /**
+     * withdraw() method: Withdraws money from an account in the accounts[] array by finding the profile of the same
+     * account passed into the method, and subtracting balances.
+     *
+     * @param account Copy of account that holds the amount to be subtracted
+     * @return true if successfully withdrawaled, false otherwise
+     */
     public boolean withdraw(Account account) {
         if (isEmpty() || find(account) == -1) {
             return false;
@@ -153,6 +193,11 @@ public class AccountDatabase {
         return false;
     } //false if insufficient fund
 
+    /**
+     * deposit() method: Deposits money into an account through a given account which holds the deposit amount
+     *
+     * @param account Account that holds deposit number
+     */
     public void deposit(Account account) { // handling invalid numbers of deposits should be in transmanager
         if (isEmpty()) {
             System.out.println("Account Database is empty!");
@@ -177,6 +222,12 @@ public class AccountDatabase {
         }
     }
 
+    /**
+     * sort() method: Sorts given array by Account type, and then Profile
+     *
+     * @param sorted array to be sorted
+     * @return sorted array
+     */
     public Account[] sort(Account[] sorted){
         boolean swap;
         do {
@@ -208,6 +259,9 @@ public class AccountDatabase {
         return sorted;
     }
 
+    /**
+     * printSorted() method: sorts the current accounts[] array by account type and profile then prints it
+     */
     public void printSorted() {
         if(accounts[0] != null) {
             Account[] copy = new Account[numAcct];
@@ -228,6 +282,10 @@ public class AccountDatabase {
         }
     } //sort by account type and profile
 
+    /**
+     * printFeesAndInterests() method: sorts the current accounts[] array by account type and profile, then adds
+     * their respective monthly interest and fees at the end of the string, then prints.
+     */
     public void printFeesAndInterests() {
         DecimalFormat df = new DecimalFormat("#0.00");
         if(accounts[0] != null) {
@@ -249,7 +307,11 @@ public class AccountDatabase {
         }
 
     } //calculate interests/fees
-    //
+
+    /**
+     * printUpdatedBalances() method: applies monthly interests and fees to accounts, then sorts by account type and
+     * profile, then prints.
+     */
     public void printUpdatedBalances() {
         DecimalFormat df = new DecimalFormat("#0.00");
         if(this.accounts == null) {
@@ -281,24 +343,25 @@ public class AccountDatabase {
 
     } //apply the interests/fees
 
-    public void printtest(){
-        for(Account i : accounts){
-            if(i != null){
-                System.out.println(i);
-                //System.out.println("Account : "+i+" BAL: "+i.balance);
-            }
-        }
-    }
-    public void printy(){
-        for(int i = 0; i < numAcct; i++){
-            System.out.println(accounts[i]);
-        }
-    }
+
+//    public void printtest(){
+//        for(Account i : accounts){
+//            if(i != null){
+//                System.out.println(i);
+//                //System.out.println("Account : "+i+" BAL: "+i.balance);
+//            }
+//        }
+//    }
+//    public void printy(){
+//        for(int i = 0; i < numAcct; i++){
+//            System.out.println(accounts[i]);
+//        }
+//    }
 
     // test method
-    public void addy(Account a, int index){
-        accounts[index] = a;
-    }
+//    public void addy(Account a, int index){
+//        accounts[index] = a;
+//    }
 
     public static void main(String[] args) {
         // test bed
